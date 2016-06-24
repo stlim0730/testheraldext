@@ -1,0 +1,59 @@
+experiments
+{
+  "6344390318":{
+    "conditional_code":"$( \".postid-10252611\" ).length > 0",
+    "variation_weights":{
+      "6346330003":2000,
+      "6337710007":2000,
+      "6337710006":2000,
+      "6339601356":2000,
+      "6330891685":2000
+    },
+    "activation_mode":"conditional",
+    "name":"Wordpress [10252611]: How Brexit could endanger 'Game of Thrones'",
+    "enabled":true,
+    "variation_ids":[
+      "6337710006",
+      "6337710007",
+      "6330891685",
+      "6339601356",
+      "6346330003"
+    ],
+    "urls":[
+      {
+        "match":"simple",
+        "value":"nypost.com"
+      }
+    ],
+    "enabled_variation_ids":[
+      "6337710006",
+      "6337710007",
+      "6330891685",
+      "6339601356",
+      "6346330003"
+    ]
+  }
+}
+
+variations
+{
+  "6337710007":{
+    "code":"$(\"h1 > .postid-10252611, h3.postid-10252611, h2.postid-10252611\").text(\"Brexit could ruin 'Game of Thrones'\");",
+    "name":"Brexit could ruin 'Game of Thrones'"
+  },
+  "6346330003":{
+    "code":"$(\"h1 > .postid-10252611, h3.postid-10252611, h2.postid-10252611\").text(\"The most important casualty of Brexit could be 'Game of Thrones'\");",
+    "name":"The most important casualty of Brexit could be 'Game of Thrones'"
+  },
+  "6339601356":{
+    "code":"$(\"h1 > .postid-10252611, h3.postid-10252611, h2.postid-10252611\").text(\"Brexit would screw up 'Game of Thrones' royally\");",
+    "name":"Brexit would screw up 'Game of Thrones' royally"
+  },
+  "6330891685":{
+    "code":"$(\"h1 > .postid-10252611, h3.postid-10252611, h2.postid-10252611\").text(\"Vote 'Remain' on Brexit if you like 'Game of Thrones'\");",
+    "name":"Vote 'Remain' on Brexit if you like 'Game of Thrones'"
+  },
+  "6337710006":{
+    "name":"Original"
+  }
+}
