@@ -190,7 +190,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       else if(msg.state === 'variation'){
           setChildTextNode('myTest',"Yup. Here's what we see:\r\n");
           
-          var ids = populateVariationsTable(msg.experiments,msg.variations);
+          var ids = populateVariationsTable(msg.experiments, msg.variations);
           addClickEvents(port,ids);
           // populateExperimentsTable(msg.experiments,msg.variations);
       }

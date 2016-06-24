@@ -53,7 +53,7 @@ function main () {
           var list_values = [].slice.call(target.children)
           console.log(list_values)
         }
-      });    
+      });
     });
      
     // configuration of the observer:

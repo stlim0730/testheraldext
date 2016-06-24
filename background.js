@@ -47,5 +47,7 @@ function injectedMessageHandler(event) {
   else if(event.data.type === 'variation') {
     console.log('I am here');
     gport.postMessage({state: event.data.type,experiments:event.data.experiments,variations:event.data.variations});
+    console.log(JSON.stringify(event.data.experiments));
+    console.log(JSON.stringify(event.data.variations));
   }
 }
