@@ -23,14 +23,18 @@
       "js": [
         "common/jquery-3.0.0.min.js",
         "content_scripts/content_script.js"
-      ]
+      ],
+      "run_at": "document_end"
     }
   ],
 
   "background": {
     "scripts": [
+      "common/jquery-3.0.0.min.js",
       "background/background.js"
     ],
-    "persistent": false
-  }
+    "persistent": true
+  },
+
+  "web_accessible_resources": ["content_scripts/injection.js"]
 }
