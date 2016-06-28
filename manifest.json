@@ -1,25 +1,40 @@
 {
   "manifest_version": 2,
-  "web_accessible_resources": ["optimisely-sniffer.js"],
-  "name": "Optimisely Detector",
-  "description": "Optimisely Extension",
+
+  "name": "Optimizely Detector",
+  "description": "Optimizely Extension",
   "version": "1.0",
+
+  "browser_action": {
+    "default_popup": "ui/popup.html"
+  },
+
   "permissions": [
-    "tabs", "http://*/*", "https://*/*"
+    "activeTab",
+    "http://*/*",
+    "https://*/*"
   ],
+
   "content_scripts": [
     {
-      "js": [
-        "background.js"
-      ],
       "matches": [
         "<all_urls>"
-      ], 
-      "all_frames": false, 
-      "run_at": "document_start"
+      ],
+      "js": [
+        "common/jquery-3.0.0.min.js",
+        "content_scripts/content_script.js"
+      ],
+      "run_at": "document_end"
     }
   ],
-  "browser_action":{
-    "default_popup": "popup.html"
-  }
+
+  "background": {
+    "scripts": [
+      "common/jquery-3.0.0.min.js",
+      "background/background.js"
+    ],
+    "persistent": true
+  },
+
+  "web_accessible_resources": ["injection_scripts/injection_script.js"]
 }
