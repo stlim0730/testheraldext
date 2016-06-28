@@ -36,5 +36,5 @@
     "persistent": true
   },
 
-  "web_accessible_resources": ["content_scripts/injection.js"]
+  "web_accessible_resources": ["injection_scripts/injection_script.js"]
 }

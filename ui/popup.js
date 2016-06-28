@@ -204,7 +204,7 @@
 //     });
 // });
 
-// Printing jQuery version
+// Print jQuery version
 if (typeof jQuery != 'undefined') {  
   // jQuery is loaded => print the version
   console.info(jQuery.fn.jquery);
@@ -212,10 +212,3 @@ if (typeof jQuery != 'undefined') {
 else {
   console.info('no jQuery');
 }
-
-$('#injectButton').click(function (e) {
-  chrome.tabs.executeScript({
-    file: 'ui/inject.js'
-  });
-  console.log('clicked');
-});
