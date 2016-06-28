@@ -40,6 +40,6 @@
       "38": "ui/images/icon38.png"
     },
     "default_title": "This page doesn't have Optimizely.",
-    "default_popup": "popup.html"
+    "default_popup": "ui/default_popup.html"
   }
 }
