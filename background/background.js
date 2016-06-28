@@ -36,8 +36,19 @@ chrome.runtime.onConnect.addListener(function (port) {
       if (msg.event === "found optimizely") {
         var optimizely = JSON.parse(msg.target);
         console.info(msg.event + ":", optimizely);
-      }
 
+        // Get the active tab ID and run page action
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+          var tabId = tabs[0].id;
+          // Change the icon
+          chrome.pageAction.show(tabId);
+          // Change the tooltip
+          chrome.pageAction.setTitle({
+            tabId: tabId,
+            title: "This page has Optimizely."
+          });
+        });
+      }
     }
     else {
       // do nothing
