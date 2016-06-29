@@ -47,6 +47,16 @@ chrome.runtime.onConnect.addListener(function (port) {
             tabId: tabId,
             title: "This page has Optimizely."
           });
+          // Activate desktop notification
+          var notification_opt = {
+            type: "basic",
+            title: "This page is experimenting on headlines.",
+            message: "Click to find out more",
+            iconUrl: "../ui/images/icon38.png"
+          };
+          chrome.notifications.create(msg.event, notification_opt, function (id) {
+            console.info(id);
+          });
         });
       }
     }
