@@ -40,6 +40,7 @@ chrome.runtime.onConnect.addListener(function (port) {
         // Get the active tab ID and run page action
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
           var tabId = tabs[0].id;
+          console.info("tabId:", tabId);
           // Change the icon
           chrome.pageAction.show(tabId);
           // Change the tooltip
@@ -51,11 +52,11 @@ chrome.runtime.onConnect.addListener(function (port) {
           var notification_opt = {
             type: "basic",
             title: "This page is experimenting on headlines.",
-            message: "Click to find out more",
+            message: "Click the extension icon to find out more.",
             iconUrl: "../ui/images/icon38.png"
           };
-          chrome.notifications.create(msg.event, notification_opt, function (id) {
-            console.info(id);
+          chrome.notifications.create("notification for " + msg.event, notification_opt, function (notiId) {
+            console.info("notiId:", notiId);
           });
         });
       }
