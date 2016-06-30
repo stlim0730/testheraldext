@@ -18,7 +18,7 @@
         "<all_urls>"
       ],
       "js": [
-        "common/jquery-3.0.0.min.js",
+        "common/jquery-2.2.4.min.js",
         "content_scripts/content_script.js"
       ],
       "run_at": "document_end"
@@ -27,13 +27,15 @@
 
   "background": {
     "scripts": [
-      "common/jquery-3.0.0.min.js",
+      "common/jquery-2.2.4.min.js",
       "background/background.js"
     ],
     "persistent": true
   },
 
-  "web_accessible_resources": ["injection_scripts/injection_script.js"],
+  "web_accessible_resources": [
+    "injection_scripts/injection_script.js"
+  ],
 
   "page_action": {
     "default_icon": {

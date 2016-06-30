@@ -1,7 +1,7 @@
 // Print jQuery version
 if (typeof jQuery != "undefined") {  
   // jQuery is loaded => print the version
-  console.info(jQuery.fn.jquery);
+  console.info("jQuery found:", jQuery.fn.jquery);
 }
 else {
   console.info("no jQuery");
