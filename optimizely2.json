@@ -1,0 +1,382 @@
+{  
+  "activeExperiments":[  
+    "6405201336"
+  ],
+  "allExperiments":{  
+    "6405201336":{  
+      "conditional_code":"$( \".postid-10262545\" ).length > 0",
+      "variation_weights":{  
+        "6403512399":2000,
+        "6403512398":2000,
+        "6399660190":2000,
+        "6388751002":2000,
+        "6386990817":2000
+      },
+      "activation_mode":"conditional",
+      "name":"Wordpress [10262545]: The ugly scenes behind the blue wall of Facebook",
+      "enabled":true,
+      "variation_ids":[  
+        "6403512398",
+        "6403512399",
+        "6399660190",
+        "6388751002",
+        "6386990817"
+      ],
+      "urls":[  
+        {  
+          "match":"simple",
+          "value":"nypost.com"
+        }
+      ],
+      "enabled_variation_ids":[  
+        "6403512398",
+        "6403512399",
+        "6399660190",
+        "6388751002",
+        "6386990817"
+      ]
+    }
+  },
+  "all_experiments":{  
+    "6405201336":{  
+      "conditional_code":"$( \".postid-10262545\" ).length > 0",
+      "variation_weights":{  
+        "6403512399":2000,
+        "6403512398":2000,
+        "6399660190":2000,
+        "6388751002":2000,
+        "6386990817":2000
+      },
+      "activation_mode":"conditional",
+      "name":"Wordpress [10262545]: The ugly scenes behind the blue wall of Facebook",
+      "enabled":true,
+      "variation_ids":[  
+        "6403512398",
+        "6403512399",
+        "6399660190",
+        "6388751002",
+        "6386990817"
+      ],
+      "urls":[  
+        {  
+          "match":"simple",
+          "value":"nypost.com"
+        }
+      ],
+      "enabled_variation_ids":[  
+        "6403512398",
+        "6403512399",
+        "6399660190",
+        "6388751002",
+        "6386990817"
+      ]
+    }
+  },
+  "allVariations":{
+    "6403512399":{
+      "code":"$(\"h1 > .postid-10262545, h3.postid-10262545, h2.postid-10262545\").text(\"Working at Facebook is worse than you could imagine \");",
+      "name":"Working at Facebook is worse than you could imagine "
+    },
+    "6386990817":{  
+      "code":"$(\"h1 > .postid-10262545, h3.postid-10262545, h2.postid-10262545\").text(\"It's not OK to talk about your wealth at Facebook \");",
+      "name":"It's not OK to talk about your wealth at Facebook"
+    },
+    "6399660190":{  
+      "code":"$(\"h1 > .postid-10262545, h3.postid-10262545, h2.postid-10262545\").text(\"The ruthless, punishing life of a Facebook employee \");",
+      "name":"The ruthless, punishing life of a Facebook employee "
+    },
+    "6388751002":{  
+      "code":"$(\"h1 > .postid-10262545, h3.postid-10262545, h2.postid-10262545\").text(\"Insider reveals what really goes on at Facebook \");",
+      "name":"Insider reveals what really goes on at Facebook "
+    },
+    "6403512398":{  
+      "name":"Original"
+    }
+  },
+  "revision":6598,
+  "variationIdsMap":{  
+    "6405201336":[  
+      "6388751002"
+    ]
+  },
+  "variation_map":{  
+    "6405201336":3
+  },
+  "variationMap":{  
+    "6405201336":3
+  },
+  "variationNamesMap":{  
+    "6405201336":"Insider reveals what really goes on at Facebook "
+  },
+  "data":{  
+    "audiences":{  
+      "2690270357":{  
+        "conditions":[  
+          "and",
+          [  
+            "or",
+            [  
+              "or",
+              {  
+                "dimension_id":2593380160,
+                "value":"desktop"
+              },
+              {  
+                "dimension_id":2593380160,
+                "value":"ipad"
+              },
+              {  
+                "dimension_id":2593380160,
+                "value":"tablet"
+              }
+            ]
+          ]
+        ],
+        "name":"Desktop only",
+        "segment_id":2664470705
+      },
+      "2840320495":{  
+        "conditions":[  
+          "and",
+          [  
+            "or",
+            [  
+              "or",
+              {  
+                "dimension_id":2830940549
+              }
+            ]
+          ]
+        ],
+        "name":"New Visitors",
+        "segment_id":2816530250
+      },
+      "2846450017":{  
+        "conditions":[  
+          "and",
+          [  
+            "or",
+            [  
+              "not",
+              [  
+                "or",
+                {  
+                  "dimension_id":2830940549
+                }
+              ]
+            ]
+          ]
+        ],
+        "name":"Returning Visitors",
+        "segment_id":2815550413
+      },
+      "2854090004":{  
+        "conditions":[  
+          "and",
+          [  
+            "or",
+            [  
+              "or",
+              {  
+                "dimension_id":2862580005,
+                "value":"US|NY|NEWYORK"
+              }
+            ]
+          ]
+        ],
+        "name":"NYC",
+        "segment_id":2851680020
+      },
+      "2870970152":{  
+        "conditions":[  
+          "and",
+          [  
+            "or",
+            [  
+              "or",
+              {  
+                "dimension_id":2593380160,
+                "value":"desktop"
+              }
+            ],
+            [  
+              "or",
+              {  
+                "dimension_id":2593380160,
+                "value":"tablet"
+              }
+            ],
+            [  
+              "or",
+              {  
+                "dimension_id":2593380160,
+                "value":"ipad"
+              }
+            ]
+          ],
+          [  
+            "or",
+            [  
+              "or",
+              {  
+                "dimension_id":2855410187,
+                "value":"true",
+                "match":"exact"
+              }
+            ]
+          ]
+        ],
+        "name":"Desktop only + Test cookie",
+        "segment_id":2865290708
+      }
+    },
+    "thirdParty":{  
+
+    },
+    "experiments":{  
+      "6405201336":{  
+        "code":"",
+        "name":"Wordpress [10262545]: The ugly scenes behind the blue wall of Facebook",
+        "conditional":true,
+        "manual":false,
+        "section_ids":[  
+
+        ],
+        "variation_ids":[  
+          "6403512398",
+          "6403512399",
+          "6399660190",
+          "6388751002",
+          "6386990817"
+        ]
+      }
+    },
+    "segments":{  
+      "298873633":{  
+        "name":"Source Type"
+      },
+      "298928413":{  
+        "name":"Browser"
+      },
+      "299044025":{  
+        "name":"Mobile Visitors"
+      },
+      "2250462273":{  
+        "name":"Campaign"
+      },
+      "2664470705":{  
+        "name":"Desktop only"
+      },
+      "2815550413":{  
+        "name":"Returning Visitors"
+      },
+      "2816530250":{  
+        "name":"New Visitors"
+      },
+      "2851680020":{  
+        "name":"NYC"
+      },
+      "2865290708":{  
+        "name":"Desktop only + Test cookie"
+      }
+    },
+    "sections":{  
+
+    },
+    "variations":{  
+      "6403512399":{  
+        "name":"Working at Facebook is worse than you could imagine ",
+        "code":"$(\"h1 > .postid-10262545, h3.postid-10262545, h2.postid-10262545\").text(\"Working at Facebook is worse than you could imagine \");"
+      },
+      "6386990817":{  
+        "name":"It's not OK to talk about your wealth at Facebook",
+        "code":"$(\"h1 > .postid-10262545, h3.postid-10262545, h2.postid-10262545\").text(\"It's not OK to talk about your wealth at Facebook \");"
+      },
+      "6399660190":{  
+        "name":"The ruthless, punishing life of a Facebook employee ",
+        "code":"$(\"h1 > .postid-10262545, h3.postid-10262545, h2.postid-10262545\").text(\"The ruthless, punishing life of a Facebook employee \");"
+      },
+      "6388751002":{  
+        "name":"Insider reveals what really goes on at Facebook ",
+        "code":"$(\"h1 > .postid-10262545, h3.postid-10262545, h2.postid-10262545\").text(\"Insider reveals what really goes on at Facebook \");"
+      },
+      "6403512398":{  
+        "name":"Original",
+        "code":""
+      }
+    },
+    "visitor":{  
+      "browser":"Chrome",
+      "browserVersion":"51.0.2704.103",
+      "device":"unknown",
+      "deviceType":"desktop",
+      "platform":{  
+        "id":"mac os",
+        "version":"10.11.5"
+      },
+      "mobile":false,
+      "mobileId":"unknown",
+      "os":"mac os",
+      "lists":{  
+
+      },
+      "location":{  
+        "continent":"NA",
+        "country":"US",
+        "region":"NY",
+        "city":"NEWYORK"
+      },
+      "ip":"104.247.35.210",
+      "matchingRules":null,
+      "referrer":"",
+      "segments":{  
+        "298873633":"search",
+        "298928413":"gc",
+        "299044025":"false",
+        "2250462273":"none",
+        "2664470705":"true",
+        "2815550413":"true",
+        "2816530250":"true",
+        "2851680020":"true"
+      },
+      "dimensions":{  
+
+      },
+      "audiences":{  
+        "2690270357":true,
+        "2840320495":true,
+        "2846450017":true,
+        "2854090004":true,
+        "2870970152":false
+      },
+      "params":{  
+        "":""
+      }
+    },
+    "state":{  
+      "activeExperiments":[  
+        "6405201336"
+      ],
+      "variationIdsMap":{  
+        "6405201336":[  
+          "6388751002"
+        ]
+      },
+      "variationMap":{  
+        "6405201336":3
+      },
+      "variationNamesMap":{  
+        "6405201336":"Insider reveals what really goes on at Facebook "
+      },
+      "enabled":true,
+      "integrations":{  
+        "activeOAuthClientIds":[  
+
+        ]
+      }
+    }
+  },
+  "iapi":{  
+
+  }
+}

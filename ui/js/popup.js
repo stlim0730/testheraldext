@@ -204,6 +204,73 @@
 //     });
 // });
 
+var optimizely = null;
+var activeExperiments = [];
+
+var processOptimizely = function (obj) {
+  var activeExps = [];
+
+  for (expId in obj["activeExperiments"]) {
+    
+    // activeExperiments[expId] = {};
+    var varIds = obj["all_experiments"][expId]["enabled_variation_ids"];
+    var variations = [];
+
+    for (let index in varIds) {
+
+      var varId = varIds[index];
+      var variation = obj["allVariations"][varId];
+      variation["id"] = varId;
+      variation["current"] = false;
+      variation["name"] = variation["name"].trim();
+      
+      // Detect current condition
+      if (variation["name"] === obj["variationNamesMap"][expId].trim()) {
+        // One of the variations
+        variation["current"] = true;
+      }
+
+      // Replacing "Original" with real name: this must happen after detecting the current condition
+      if (variation["name"] === "Original") {
+        variation["name"] = obj["all_experiments"][expId]["name"].split(":")[1].trim();
+      }
+
+      variations.push(variation);
+    }
+
+    var experiment = {
+      id: expId,
+      variations: variations
+    };
+
+    activeExps.push(experiment);
+  }
+
+  // if (activeExps.length == 0) activeExps.push("dummy");
+
+  return activeExps;
+};
+
+var tabulateExperiments = function (div, results) {
+  if (results.length == 0) {
+    $("div.nothing-to-show").show();
+    $("div.things-to-show").hide();
+    return;
+  }
+
+  // activeExperiments = 
+
+  // var source = $("#experiment-template").html();
+  // var template = Handlebars.compile(source);
+  // $("#active-experiments").html(template(activeExperiments));
+  
+  // TODO: check if activeExperiment is correct
+  // TODO: check if handlebars work
+  // TODO: feed the data using the template
+
+  $("div.nothing-to-show").hide();
+  $("div.things-to-show").show();
+};
 
 // Print jQuery version
 if (typeof jQuery != "undefined") {  
@@ -213,6 +280,32 @@ if (typeof jQuery != "undefined") {
 else {
   console.info("no jQuery");
 }
+
+var port = chrome.extension.connect();
+port.postMessage({
+  sender: "popup",
+  receiver: "background",
+  event: "init",
+  target: ""
+});
+
+port.onMessage.addListener(function (msg) {
+
+  if (msg.receiver !== "popup") return;
+
+  console.info(msg);
+
+  if (msg.sender === "background") {
+
+    if (msg.event === "found optimizely") {
+      optimizely = JSON.parse(msg.target);
+      console.info(msg.event + ":", optimizely);
+      activeExperiments = processOptimizely(optimizely);
+      tabulateExperiments($("#results"), activeExperiments);
+    }
+  }
+
+});
 
 $("a.twitter-share-button").click(function (e) {
   e.preventDefault();

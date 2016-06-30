@@ -1,3 +1,12 @@
+var connections = {
+  content: false,
+  injection: false,
+  popup: false
+};
+
+var optimizely = null;
+var optimizelyShared = false;
+
 // Print jQuery version
 if (typeof jQuery != "undefined") {  
   // jQuery is loaded => print the version
@@ -11,6 +20,9 @@ chrome.runtime.onConnect.addListener(function (port) {
   console.info(port, "connected");
 
   port.onMessage.addListener(function (msg) {
+
+    if (msg.receiver !== "background") return;
+
     console.info(msg);
 
     if (msg.sender === "content") {
@@ -34,13 +46,15 @@ chrome.runtime.onConnect.addListener(function (port) {
     else if (msg.sender === "injection") {
 
       if (msg.event === "found optimizely") {
-        var optimizely = JSON.parse(msg.target);
+        optimizely = JSON.parse(msg.target);
         console.info(msg.event + ":", optimizely);
 
         // Get the active tab ID and run page action
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
           var tabId = tabs[0].id;
           console.info("tabId:", tabId);
+          connections["content"] = { tabId: tabId };
+          connections["injection"] = { tabId: tabId };
           // Change the icon
           chrome.pageAction.show(tabId);
           // Change the tooltip
@@ -58,7 +72,33 @@ chrome.runtime.onConnect.addListener(function (port) {
           chrome.notifications.create("notification for " + msg.event, notification_opt, function (notiId) {
             console.info("notiId:", notiId);
           });
+          // Pass Optimizely to popup
+          if (connections["popup"] && !optimizelyShared) {
+            port.postMessage({
+              sender: "background",
+              receiver: "popup",
+              event: msg.event,
+              target: msg.target
+            });
+            optimizelyShared = true;
+          }
         });
+      }
+    }
+    else if (msg.sender === "popup") {
+
+      if (msg.event === "init") {
+        connections["popup"] = true;
+
+        if (optimizely && !optimizelyShared) {
+          port.postMessage({
+            sender: "background",
+            receiver: "popup",
+            event: "found optimizely",
+            target: JSON.stringify(optimizely)
+          });
+          optimizelyShared = true;
+        }
       }
     }
     else {
