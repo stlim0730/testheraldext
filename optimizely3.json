@@ -1,0 +1,352 @@
+{  
+  "activeExperiments":[  
+    "6398621582"
+  ],
+  "allExperiments":{  
+    "6398621582":{  
+      "conditional_code":"$( \".postid-10262972\" ).length > 0",
+      "variation_weights":{  
+        "6388851353":3334,
+        "6388851354":3333,
+        "6402462627":3333
+      },
+      "activation_mode":"conditional",
+      "name":"Wordpress [10262972]: Cows cannot resist this beautiful Swedish woman",
+      "enabled":true,
+      "variation_ids":[  
+        "6388851353",
+        "6388851354",
+        "6402462627"
+      ],
+      "urls":[  
+        {  
+          "match":"simple",
+          "value":"nypost.com"
+        }
+      ],
+      "enabled_variation_ids":[  
+        "6388851353",
+        "6388851354",
+        "6402462627"
+      ]
+    }
+  },
+  "all_experiments":{  
+    "6398621582":{  
+      "conditional_code":"$( \".postid-10262972\" ).length > 0",
+      "variation_weights":{  
+        "6388851353":3334,
+        "6388851354":3333,
+        "6402462627":3333
+      },
+      "activation_mode":"conditional",
+      "name":"Wordpress [10262972]: Cows cannot resist this beautiful Swedish woman",
+      "enabled":true,
+      "variation_ids":[  
+        "6388851353",
+        "6388851354",
+        "6402462627"
+      ],
+      "urls":[  
+        {  
+          "match":"simple",
+          "value":"nypost.com"
+        }
+      ],
+      "enabled_variation_ids":[  
+        "6388851353",
+        "6388851354",
+        "6402462627"
+      ]
+    }
+  },
+  "allVariations":{  
+    "6388851353":{  
+      "name":"Original"
+    },
+    "6388851354":{  
+      "code":"$(\"h1 > .postid-10262972, h3.postid-10262972, h2.postid-10262972\").text(\"Swedish Daenerys Targaryen calls cows instead of dragons\");",
+      "name":"Swedish Daenerys Targaryen calls cows instead of dragons"
+    },
+    "6402462627":{  
+      "code":"$(\"h1 > .postid-10262972, h3.postid-10262972, h2.postid-10262972\").text(\"This woman brings all the milkshakes to the Fjord\");",
+      "name":"This woman brings all the milkshakes to the Fjord"
+    }
+  },
+  "revision":6600,
+  "variationIdsMap":{  
+    "6398621582":[  
+      "6388851353"
+    ]
+  },
+  "variation_map":{  
+    "6398621582":0
+  },
+  "variationMap":{  
+    "6398621582":0
+  },
+  "variationNamesMap":{  
+    "6398621582":"Original"
+  },
+  "data":{  
+    "audiences":{  
+      "2690270357":{  
+        "conditions":[  
+          "and",
+          [  
+            "or",
+            [  
+              "or",
+              {  
+                "dimension_id":2593380160,
+                "value":"desktop"
+              },
+              {  
+                "dimension_id":2593380160,
+                "value":"ipad"
+              },
+              {  
+                "dimension_id":2593380160,
+                "value":"tablet"
+              }
+            ]
+          ]
+        ],
+        "name":"Desktop only",
+        "segment_id":2664470705
+      },
+      "2840320495":{  
+        "conditions":[  
+          "and",
+          [  
+            "or",
+            [  
+              "or",
+              {  
+                "dimension_id":2830940549
+              }
+            ]
+          ]
+        ],
+        "name":"New Visitors",
+        "segment_id":2816530250
+      },
+      "2846450017":{  
+        "conditions":[  
+          "and",
+          [  
+            "or",
+            [  
+              "not",
+              [  
+                "or",
+                {  
+                  "dimension_id":2830940549
+                }
+              ]
+            ]
+          ]
+        ],
+        "name":"Returning Visitors",
+        "segment_id":2815550413
+      },
+      "2854090004":{  
+        "conditions":[  
+          "and",
+          [  
+            "or",
+            [  
+              "or",
+              {  
+                "dimension_id":2862580005,
+                "value":"US|NY|NEWYORK"
+              }
+            ]
+          ]
+        ],
+        "name":"NYC",
+        "segment_id":2851680020
+      },
+      "2870970152":{  
+        "conditions":[  
+          "and",
+          [  
+            "or",
+            [  
+              "or",
+              {  
+                "dimension_id":2593380160,
+                "value":"desktop"
+              }
+            ],
+            [  
+              "or",
+              {  
+                "dimension_id":2593380160,
+                "value":"tablet"
+              }
+            ],
+            [  
+              "or",
+              {  
+                "dimension_id":2593380160,
+                "value":"ipad"
+              }
+            ]
+          ],
+          [  
+            "or",
+            [  
+              "or",
+              {  
+                "dimension_id":2855410187,
+                "value":"true",
+                "match":"exact"
+              }
+            ]
+          ]
+        ],
+        "name":"Desktop only + Test cookie",
+        "segment_id":2865290708
+      }
+    },
+    "thirdParty":{  
+
+    },
+    "experiments":{  
+      "6398621582":{  
+        "code":"",
+        "name":"Wordpress [10262972]: Cows cannot resist this beautiful Swedish woman",
+        "conditional":true,
+        "manual":false,
+        "section_ids":[  
+
+        ],
+        "variation_ids":[  
+          "6388851353",
+          "6388851354",
+          "6402462627"
+        ]
+      }
+    },
+    "segments":{  
+      "298873633":{  
+        "name":"Source Type"
+      },
+      "298928413":{  
+        "name":"Browser"
+      },
+      "299044025":{  
+        "name":"Mobile Visitors"
+      },
+      "2250462273":{  
+        "name":"Campaign"
+      },
+      "2664470705":{  
+        "name":"Desktop only"
+      },
+      "2815550413":{  
+        "name":"Returning Visitors"
+      },
+      "2816530250":{  
+        "name":"New Visitors"
+      },
+      "2851680020":{  
+        "name":"NYC"
+      },
+      "2865290708":{  
+        "name":"Desktop only + Test cookie"
+      }
+    },
+    "sections":{  
+
+    },
+    "variations":{  
+      "6388851353":{  
+        "name":"Original",
+        "code":""
+      },
+      "6388851354":{  
+        "name":"Swedish Daenerys Targaryen calls cows instead of dragons",
+        "code":"$(\"h1 > .postid-10262972, h3.postid-10262972, h2.postid-10262972\").text(\"Swedish Daenerys Targaryen calls cows instead of dragons\");"
+      },
+      "6402462627":{  
+        "name":"This woman brings all the milkshakes to the Fjord",
+        "code":"$(\"h1 > .postid-10262972, h3.postid-10262972, h2.postid-10262972\").text(\"This woman brings all the milkshakes to the Fjord\");"
+      }
+    },
+    "visitor":{  
+      "browser":"Chrome",
+      "browserVersion":"51.0.2704.103",
+      "device":"unknown",
+      "deviceType":"desktop",
+      "platform":{  
+        "id":"mac os",
+        "version":"10.11.5"
+      },
+      "mobile":false,
+      "mobileId":"unknown",
+      "os":"mac os",
+      "lists":{  
+
+      },
+      "location":{  
+        "continent":"NA",
+        "country":"US",
+        "region":"NY",
+        "city":"NEWYORK"
+      },
+      "ip":"104.247.35.210",
+      "matchingRules":null,
+      "referrer":"",
+      "segments":{  
+        "298873633":"search",
+        "298928413":"gc",
+        "299044025":"false",
+        "2250462273":"none",
+        "2664470705":"true",
+        "2815550413":"true",
+        "2816530250":"true",
+        "2851680020":"true"
+      },
+      "dimensions":{  
+
+      },
+      "audiences":{  
+        "2690270357":true,
+        "2840320495":true,
+        "2846450017":true,
+        "2854090004":true,
+        "2870970152":false
+      },
+      "params":{  
+        "":""
+      }
+    },
+    "state":{  
+      "activeExperiments":[  
+        "6398621582"
+      ],
+      "variationIdsMap":{  
+        "6398621582":[  
+          "6388851353"
+        ]
+      },
+      "variationMap":{  
+        "6398621582":0
+      },
+      "variationNamesMap":{  
+        "6398621582":"Original"
+      },
+      "enabled":true,
+      "integrations":{  
+        "activeOAuthClientIds":[  
+
+        ]
+      }
+    }
+  },
+  "iapi":{  
+
+  }
+}

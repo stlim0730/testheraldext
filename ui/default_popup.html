@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="css/popup.css">
     <script src="../common/jquery-2.2.4.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/handlebars-v4.0.5.js"></script>
   </head>
   <body>
 
@@ -27,29 +28,33 @@
       </div>
 
       <div class="row">
-        <table class="table table-striped table-hover">
-          <thead>
-            <tr>
-              <th>Active Experiment #</th>
-              <th>Variations</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td rowspan="4">1</td>
-              <td>Variation 1</td>
-            </tr>
-            <tr>
-              <td>Variation 2</td>
-            </tr>
-            <tr>
-              <td>Variation 3</td>
-            </tr>
-            <tr>
-              <td>Variation 4</td>
-            </tr>
-          </tbody>
-        </table>
+
+        <div class="nothing-to-show collapse">
+          <div class="col-xs-offset-1 col-xs-10 well">
+            Currently, this page doesn't seem to be performing experiment.<br />Come back later!
+          </div>
+        </div>
+
+        <div class="things-to-show collapse">
+          <div class="col-xs-offset-1 col-xs-10 well">
+            These are the headline candidates this page is experimenting on.<br />Which headline would you click?
+          </div>
+
+          <script id="experiment-template" type="text/x-handlebars-template">
+            {{#experiment}}
+            <div class="list-group">
+              {{#variation}}
+              <button type="button" class="list-group-item">{{name}}</button>
+              {{/variation}}
+            </div>
+            {{/experiment}}
+          </script>
+
+          <div class="active-experiments">
+          </div>
+
+        </div>
+
       </div>
 
     </div>
