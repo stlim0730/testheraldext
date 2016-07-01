@@ -21,7 +21,7 @@ var port = chrome.runtime.connect();
 window.addEventListener("message", function(event) {
   // We only accept messages from ourselves
   if (event.source != window)
-    return;
+    return true;
 
   // Bypass the message received
   if (event.data.sender === "injection"
@@ -42,7 +42,7 @@ $(document).ready(function () {
 
   port.onMessage.addListener(function (msg) {
     
-    if (msg.receiver !== "content") return;
+    // if (msg.receiver !== "content") return true;
 
     console.info(msg);
 
@@ -54,6 +54,8 @@ $(document).ready(function () {
         msg.target["elem"]
       );
     }
+
+    return true;
   });
 });
 // End

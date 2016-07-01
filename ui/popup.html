@@ -6,7 +6,6 @@
     <link rel="stylesheet" type="text/css" href="css/popup.css">
     <script src="../common/jquery-2.2.4.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/handlebars-v4.0.5.js"></script>
   </head>
   <body>
 
@@ -14,11 +13,13 @@
     <nav class="navbar navbar-default">
       <div class="navbar-header">
         <a class="navbar-brand" href="#">Headlines being tested here</a>
+        <span class="debugging-note collapse small warning">* You're looking at prepopulated experiment data for debugging purpose.</span>
       </div>
     </nav>
 
 
     <div class="container">
+
 
       <div class="row">
         <div class="col-xs-offset-6 col-xs-6" style="text-align:right">
@@ -40,16 +41,6 @@
             These are the headline candidates this page is experimenting on.<br />Which headline would you click?
           </div>
 
-          <script id="experiment-template" type="text/x-handlebars-template">
-            {{#experiment}}
-            <div class="list-group">
-              {{#variation}}
-              <button type="button" class="list-group-item">{{name}}</button>
-              {{/variation}}
-            </div>
-            {{/experiment}}
-          </script>
-
           <div class="active-experiments">
           </div>
 
@@ -57,13 +48,11 @@
 
       </div>
 
-    </div>
 
+    </div>
 
   </body>
 
-
   <script src="js/popup.js"></script>
-
 
 </html>

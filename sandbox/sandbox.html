@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sandbox for Popup</title>
+    <script src="../common/jquery-2.2.4.min.js"></script>
+    <script src="js/handlebars-v4.0.5.js"></script>
+  </head>
+  <body>
+
+    <script id="experiment-template" type="text/x-handlebars-template">
+      <div class="list-group">
+        {{#each variations}}
+        <button type="button" class="list-group-item">{{#if current}}<strong>{{/if}}{{name}}{{#if current}}</strong>{{/if}}</button>
+        {{/each}}
+      </div>
+    </script>
+
+  </body>
+  <script src="js/sandbox.js"></script>
+</html>

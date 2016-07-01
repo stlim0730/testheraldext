@@ -26,10 +26,7 @@
   ],
 
   "background": {
-    "scripts": [
-      "common/jquery-2.2.4.min.js",
-      "background/background.js"
-    ],
+    "page": "background/background.html",
     "persistent": true
   },
 
@@ -43,6 +40,12 @@
       "38": "ui/images/icon38.png"
     },
     "default_title": "This page doesn't have Optimizely.",
-    "default_popup": "ui/default_popup.html"
+    "default_popup": "ui/popup.html"
+  },
+
+  "sandbox": {
+    "pages": [
+      "sandbox/sandbox.html"
+    ]
   }
 }
