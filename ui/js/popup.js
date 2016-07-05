@@ -1513,14 +1513,15 @@ port.onMessage.addListener(function (msg) {
         $("div.nothing-to-show").show();
         $("div.things-to-show").hide();
       }
-
-      // Request for render using handlebars in the sandbox
-      port.postMessage({
-        sender: "popup",
-        receiver: "background",
-        event: "sandbox render",
-        target: JSON.stringify(activeExperiments)
-      });
+      else {
+        // Request for render using handlebars in the sandbox
+        port.postMessage({
+          sender: "popup",
+          receiver: "background",
+          event: "sandbox render",
+          target: JSON.stringify(activeExperiments)
+        });
+      }
     }
     else if (msg.event === "sandbox rendered") {
       // console.info(msg.target);
