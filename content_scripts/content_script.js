@@ -42,8 +42,6 @@ $(document).ready(function () {
 
   port.onMessage.addListener(function (msg) {
     
-    // if (msg.receiver !== "content") return true;
-
     console.info(msg);
 
     if (msg.event === "inject") {

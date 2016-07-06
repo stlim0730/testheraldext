@@ -1498,8 +1498,6 @@ port.postMessage({
 
 port.onMessage.addListener(function (msg) {
 
-  // if (msg.receiver !== "popup") return true;
-
   console.info(msg);
 
   if (msg.sender === "background") {
