@@ -1,6 +1,6 @@
 var connections = {
-  content: false,
-  injection: false,
+  content: [],
+  injection: [],
   popup: false,
   sandbox: false
 };
@@ -8,7 +8,6 @@ var connections = {
 var ports = {};
 
 var optimizely = null;
-var optimizelyShared = false;
 
 // Print jQuery version
 if (typeof jQuery != "undefined") {  
@@ -23,8 +22,6 @@ chrome.runtime.onConnect.addListener(function (port) {
   console.info(port, "connected");
 
   port.onMessage.addListener(function (msg) {
-
-    // if (msg.receiver !== "background") return true;
 
     console.info(msg);
 
@@ -58,8 +55,8 @@ chrome.runtime.onConnect.addListener(function (port) {
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
           var tabId = tabs[0].id;
           console.info("tabId:", tabId);
-          connections["content"] = { tabId: tabId };
-          connections["injection"] = { tabId: tabId };
+          connections["content"].push(tabId);
+          connections["injection"].push(tabId);
           // Change the icon
           chrome.pageAction.show(tabId);
           // Change the tooltip
@@ -77,16 +74,16 @@ chrome.runtime.onConnect.addListener(function (port) {
           chrome.notifications.create("notification for " + msg.event, notification_opt, function (notiId) {
             console.info("notiId:", notiId);
           });
-          // Pass Optimizely to popup
-          // if (connections["popup"] && !optimizelyShared) {
+          // Pass Optimizely to popup, if possible
+          if (ports["popup"]) {
+            console.info("passing optimizely to popup: popup port exists.");
             ports["popup"].postMessage({
               sender: "background",
               receiver: "popup",
               event: msg.event,
               target: msg.target
             });
-          //   optimizelyShared = true;
-          // }
+          }
         });
       }
     }
@@ -95,15 +92,15 @@ chrome.runtime.onConnect.addListener(function (port) {
       if (msg.event === "init") {
         connections["popup"] = true;
 
-        // if (optimizely && !optimizelyShared) {
+        if(optimizely) {
+          console.info("passing optimizely to popup: optimizely exists.");
           ports["popup"].postMessage({
             sender: "background",
             receiver: "popup",
             event: "found optimizely",
             target: JSON.stringify(optimizely)
           });
-          optimizelyShared = true;
-        // }
+        }
       }
       else if (msg.event === "sandbox render") {
         // Because sandbox is not connected to port yet
@@ -132,4 +129,10 @@ chrome.runtime.onConnect.addListener(function (port) {
       // do nothing
     }
   });
+
+  console.info(connections);
+});
+
+chrome.tabs.onRemoved.addListener(function (closingTabId, removeInfo) {
+
 });
