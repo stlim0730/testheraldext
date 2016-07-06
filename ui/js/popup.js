@@ -1429,7 +1429,7 @@ var optimizelyBackups = [
 // });
 
 var optimizely = null;
-var debuggingMode = false
+var debuggingMode = false;
 var activeExperiments = [];
 var optimizelyBackupPtr = Math.floor((Math.random() * 3));
 
