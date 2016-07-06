@@ -1429,13 +1429,14 @@ var optimizelyBackups = [
 // });
 
 var optimizely = null;
+var debuggingMode = false
 var activeExperiments = [];
 var optimizelyBackupPtr = Math.floor((Math.random() * 3));
 
 var processOptimizely = function (obj) {
   var activeExps = [];
 
-  if(obj["activeExperiments"].length == 0) {
+  if(obj["activeExperiments"].length == 0 && debuggingMode) {
     obj = optimizelyBackups[optimizelyBackupPtr];
     $("span.debugging-note").show();
   }
