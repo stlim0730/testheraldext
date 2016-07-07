@@ -1,26 +1,32 @@
 var Detector = Backbone.Model.extend({
   defaults: {
-    optimizely: null,
     tabId: null,
     isFound: false
+  },
+
+  constructor: function(attr, opt) {
+    this.optimizely = null;
+
+    Backbone.Model.apply(this, arguments);
+  },
+
+  initialize: function(attr, opt) {
+    console.log('initialized', 'Detector', this);
+
+    this.on('change:isFound', function() {
+      console.log('change', 'isFound', this);
+    });
   },
 
   find: function() {
     if(window.optimizely) {
       this.optimizely = JSON.parse(JSON.stringify(window.optimizely));
-      return true;
+      isFound = true;
+      // return true;
     }
     else {
-      return false;
-    }
-  },
-
-  isFound: function() {
-    if(this.optimizely) {
-      return true;
-    }
-    else {
-      return false;
+      isFound = false;
+      // return false;
     }
   }
 });
@@ -31,23 +37,37 @@ var Messenger = Backbone.Model.extend({
   defaults: {
     name: null,
     tabId: null,
-    ports: {},
-    handlers: {}
+    connected: false
+  },
+
+  constructor: function(attr, opt) {
+    this.ports = null;
+    this.handlers = null;
+
+    Backbone.Model.apply(this, arguments);
+  },
+
+  initialize: function(attr, opt) {
+    console.log('initialized', 'Messenger', this);
+
+    this.on('change:connected', function() {
+      console.log('change', 'connected', this);
+    });
   },
 
   addPort: function(portName, port) {
-    ports[portName] = port;
+    this.ports[portName] = port;
   },
 
   removePort: function(portName) {
-    if(portName in ports) {
-      ports[portName] = null;
-      delete ports[portName];
+    if(portName in this.ports) {
+      this.ports[portName] = null;
+      delete this.ports[portName];
     }
   },
 
   send: function(receiver, message) {
-    var port = ports[receiver];
+    var port = this.ports[receiver];
     if(port && port.postMessage) {
       port.postMessage({
         sender: this.name,
@@ -61,7 +81,7 @@ var Messenger = Backbone.Model.extend({
   },
 
   addMessageHandler: function(eventName, handlerFunc) {
-    handlers[eventName] = handlerFunc;
+    this.handlers[eventName] = handlerFunc;
     // TODO: real binding between events and handlers?
   }
 });
@@ -70,14 +90,19 @@ var Messenger = Backbone.Model.extend({
 
 var SandboxRenderer = Backbone.Model.extend({
   defaults: {
-    sandboxElem: null,
-    sources: {},
-    templates: {}
+    sandboxElem: null
+  },
+
+  constructor: function(attr, opt) {
+    this.sources = {};
+    this.templates = {};
+
+    Backbone.Model.apply(this, arguments);
   },
 
   _setTemplate: function(templateName, compileFunc) {
     templates[templateName] = compileFunc(source);
-    // templates[templateName] = Handlebars.compile(source);
+    //e.g., templates[templateName] = Handlebars.compile(source);
   },
 
   setSource: function(sourceName, sourceElemId) {
@@ -103,7 +128,21 @@ var Tab = Backbone.Model.extend({
   defaults: {
     tabId: null,
     name: null,
-    messenger: new Messenger({name: this.name, tabId: this.tabId}),
-    detector: new Detector({tabId: this.tabId})
+    isOpen: true
+  },
+
+  constructor: function(attr, opt) {
+    this.messenger = new Messenger(attr);
+    this.detector = new Detector(attr);
+
+    Backbone.Model.apply(this, arguments);
+  },
+
+  initialize: function(attr, opt) {
+    console.log('initialized', 'Tab', this);
+
+    this.on('change:isOpen', function() {
+      console.log('change', 'isOpen', this);
+    });
   }
 });
