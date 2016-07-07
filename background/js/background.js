@@ -9,15 +9,6 @@
 
 // var optimizely = null;
 
-// // Print jQuery version
-// if (typeof jQuery != "undefined") {  
-//   // jQuery is loaded => print the version
-//   console.info("jQuery found:", jQuery.fn.jquery);
-// }
-// else {
-//   console.info("no jQuery");
-// }
-
 // chrome.runtime.onConnect.addListener(function (port) {
 //   console.info(port, "connected");
 
@@ -136,3 +127,81 @@
 // chrome.tabs.onRemoved.addListener(function (closingTabId, removeInfo) {
 
 // });
+var app = {};
+
+(function() {
+  console.log('started:', 'background');
+
+  //
+  // Globals
+  //
+
+  app.tabs = {};
+  app.ports = {};
+  app.ports.content = {};
+  app.ports.injection = {};
+
+  //
+  // Start
+  //
+
+  chrome.runtime.onConnect.addListener(function (port) {
+    console.log('connected:', port);
+
+    port.onMessage.addListener(function (msg) {
+      console.log('received a message:', msg);
+
+      if(msg.sender && msg.sender.startsWith('content')) {
+        app.ports.content[msg.sender] = port;
+      }
+      else if(msg.sender && msg.sender.startsWith('injection')) {
+        app.ports.injection[msg.sender] = port;
+      }
+      else {
+        app.ports[msg.sender] = port;
+      }
+
+      switch(msg.sender) {
+
+        case 'sandbox':
+          
+          switch(msg.event) {
+            
+            case 'init':
+              app.ports.sandbox.postMessage({
+                sender: 'background',
+                receiver: 'sandbox',
+                event: 'init-feedback',
+                target: ''
+              });
+              break;
+          }
+          break;
+        
+        case 'content':
+          
+          switch(msg.event) {
+            
+            case 'init':
+              //
+              break;
+          }
+
+          break;
+
+        case 'injection':
+          //
+          break;
+
+        case 'popup':
+          //
+          break;
+
+        default:
+          //
+          break;
+      }
+    });
+  });
+
+})();
