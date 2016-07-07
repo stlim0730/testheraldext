@@ -66,6 +66,7 @@
   //
 
   var tabName = btoa(new Date());
+  var tabId = null;
 
   //
   // Start
@@ -76,7 +77,26 @@
     sender: 'content' + tabName,
     receiver: 'background',
     event: 'init',
-    target: ''
+    target: tabName
+  });
+
+  port.onMessage.addListener(function (msg) {
+    console.log('received a message:', msg);
+
+    switch(msg.sender) {
+
+      case 'background':
+
+        switch(msg.event) {
+          
+          case 'init-feedback':
+            tabId = msg.target;
+            break;
+
+        }
+        
+      break;
+    }
   });
 
 })();

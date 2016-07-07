@@ -178,17 +178,6 @@ var app = {};
           }
           break;
         
-        case 'content':
-          
-          switch(msg.event) {
-            
-            case 'init':
-              //
-              break;
-          }
-
-          break;
-
         case 'injection':
           //
           break;
@@ -198,7 +187,29 @@ var app = {};
           break;
 
         default:
-          //
+          
+          if(msg.sender.startsWith('content')) {
+            switch(msg.event) {
+              
+              case 'init':
+                chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                  var tabId = tabs[0].id;
+                  var tab = new Tab({
+                    name: msg.target,
+                    tabId: tabId
+                  });
+                  app.tabs[tabId] = tab;
+                  app.ports.content[msg.sender].postMessage({
+                    sender: 'background',
+                    receiver: msg.sender,
+                    event: 'init-feedback',
+                    target: tabId
+                  });
+                });
+                break;
+            }
+          }
+
           break;
       }
     });
