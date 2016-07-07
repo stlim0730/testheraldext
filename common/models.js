@@ -1393,19 +1393,18 @@ var SandboxRenderer = Backbone.Model.extend({
 
   _setTemplate: function(templateName, compileFunc) {
     this.templates[templateName] = compileFunc(this.sources[templateName]);
-    //e.g., templates[templateName] = Handlebars.compile(source);
   },
 
-  renderInSandbox: function(sourceName, templateName, context) {
-    var source = sources[sourceName];
+  sbRender: function(sourceName, context) {
+    var source = this.sources[sourceName];
     if(!source) {
       console.error('cannot find the source. setSource before render.', sourceName);
       return '';
     }
-    if(!templateName in templates) {
-      _setTemplate(templateName);
-    }
-    return templates[templateName](context);
+    // if(!templateName in templates) {
+    //   _setTemplate(templateName);
+    // }
+    return this.templates[sourceName](context);
   }
 });
 
