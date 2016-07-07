@@ -139,7 +139,7 @@ var app = {};
   app.tabs = {};
   app.ports = {};
   app.ports.content = {};
-  app.ports.injection = {};
+  // app.ports.injection = {};
 
   //
   // Start
@@ -154,9 +154,9 @@ var app = {};
       if(msg.sender && msg.sender.startsWith('content')) {
         app.ports.content[msg.sender] = port;
       }
-      else if(msg.sender && msg.sender.startsWith('injection')) {
-        app.ports.injection[msg.sender] = port;
-      }
+      // else if(msg.sender && msg.sender.startsWith('injection')) {
+      //   app.ports.injection[msg.sender] = port;
+      // }
       else {
         app.ports[msg.sender] = port;
       }
@@ -178,9 +178,16 @@ var app = {};
           }
           break;
         
-        case 'injection':
-          //
-          break;
+        // case 'injection':
+          
+        //   switch(msg.event) {
+            
+        //     case 'found optimizely':
+        //       console.log(msg.event);
+        //       break;
+        //   }
+
+        //   break;
 
         case 'popup':
           //
@@ -206,6 +213,16 @@ var app = {};
                     target: tabId
                   });
                 });
+                break;
+
+              case 'found optimizely':
+                var tabId = msg.target.tabId;
+                // Process optimizely data
+                app.tabs[tabId].processor.set('isFound', true);
+                app.tabs[tabId].processor.optimizely = msg.target.optimizely;
+                app.tabs[tabId].processor.setActiveExperiments();
+                console.log('isUsingPrePopulated:', app.tabs[tabId].processor.get('isUsingPrePopulated'));
+                
                 break;
             }
           }

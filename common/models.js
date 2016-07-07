@@ -1,9 +1,9 @@
-var Detector = Backbone.Model.extend({
+var Processor = Backbone.Model.extend({
   defaults: {
     tabId: null,
     isFound: false,
     isUsingPrePopulated: false,
-    _usePrePopulated: true
+    usePrePopulated: true
   },
 
   _prePopulated: [
@@ -1232,41 +1232,18 @@ var Detector = Backbone.Model.extend({
     Backbone.Model.apply(this, arguments);
   },
 
-  initialize: function(attr, opt) {
-    console.log('initialized', 'Detector', this);
-
-    this.on('change:isFound', function() {
-      console.log('change', 'isFound', this);
-    });
-    this.on('change:isUsingPrePopulated', function() {
-      console.log('change', 'isUsingPrePopulated', this);
-    });
-  },
-
-  find: function() {
-    if(window.optimizely) {
-      this.optimizely = JSON.parse(JSON.stringify(window.optimizely));
-      isFound = true;
-      // return true;
-    }
-    else {
-      isFound = false;
-      // return false;
-    }
-  },
-
-  getActiveExperiments: function() {
-    if (this.activeExperiments.length > 0) return this.activeExperiments;
+  setActiveExperiments: function() {
+    this.activeExperiments = [];
 
     var obj = this.optimizely;
     
-    if(!obj
-      || obj.activeExperiments.length == 0
-      && this._usePrePopulated) {
+    if(obj.activeExperiments.length == 0
+      && this.attributes.usePrePopulated) {
       obj = this._prePopulated[this._prePopulatedPtr];
-      isUsingPrePopulated = true;
+      this.attributes.isUsingPrePopulated = true;
       // $("span.debugging-note").show();
     }
+
 
     var _activeExperiments = obj.activeExperiments;
 
@@ -1419,7 +1396,7 @@ var Tab = Backbone.Model.extend({
 
   constructor: function(attr, opt) {
     this.messenger = new Messenger(attr);
-    this.detector = new Detector(attr);
+    this.processor = new Processor(attr);
 
     Backbone.Model.apply(this, arguments);
   },
@@ -1433,7 +1410,7 @@ var Tab = Backbone.Model.extend({
   },
 
   getOptimizely: function() {
-    return this.detector.optimizely;
+    return this.processor.optimizely;
   },
 
   getPort: function(portName) {

@@ -58,6 +58,8 @@
 // });
 // // End
 
+var tab = null;
+
 (function() {
   console.log('started:', 'content');
 
@@ -66,8 +68,15 @@
   //
 
   var tabName = btoa(new Date());
-  var tabId = null;
 
+  var injectScript = function (file, node) {
+    var th = document.getElementsByTagName(node)[0];
+    var s = document.createElement('script');
+    s.setAttribute('type', 'text/javascript');
+    s.setAttribute('src', file);
+    (document.head || document.documentElement).appendChild(s);
+  }
+  
   //
   // Start
   //
@@ -90,13 +99,43 @@
         switch(msg.event) {
           
           case 'init-feedback':
-            tabId = msg.target;
+            tab = new Tab({
+              name: tabName,
+              tabId: msg.target
+            });
+            injectScript(
+              chrome.extension.getURL('injection_scripts/injection_script.js'),
+              msg.target['body']
+            );
             break;
-
         }
-        
+
       break;
     }
   });
+
+  // Add an additional message handler (native) that passes messages from injection to background
+  window.addEventListener('message', function(event) {
+    // We only accept messages from ourselves
+    if (event.source != window)
+      return true;
+
+    // Bypass the message received
+    if (event.data.sender === 'injection'
+      && event.data.receiver === 'content') {
+      var optimizely = JSON.parse(event.data.target);
+      console.info('injection script found optimizely:', optimizely);
+
+      port.postMessage({
+        sender: 'content' + tabName,
+        receiver: 'background',
+        event: event.data.event,
+        target: {
+          tabId: tab.get('tabId'),
+          optimizely: optimizely
+        }
+      });
+    }
+  }, false);
 
 })();
