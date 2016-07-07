@@ -1236,12 +1236,19 @@ var Processor = Backbone.Model.extend({
     this.activeExperiments = [];
 
     var obj = this.optimizely;
-    
-    if(obj.activeExperiments.length == 0
-      && this.attributes.usePrePopulated) {
-      obj = this._prePopulated[this._prePopulatedPtr];
-      this.attributes.isUsingPrePopulated = true;
-      // $("span.debugging-note").show();
+
+    // Error handling: optimizely is not usable
+    if(obj.activeExperiments == null
+      || obj.activeExperiments.length == 0) {
+      
+      if(!this.attributes.usePrePopulated) {
+        return this.activeExperiments;
+      }
+      else {
+        obj = this._prePopulated[this._prePopulatedPtr];
+        this.attributes.isUsingPrePopulated = true;
+        // $("span.debugging-note").show();
+      }
     }
 
 

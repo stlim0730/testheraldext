@@ -222,7 +222,8 @@ var app = {};
                 app.tabs[tabId].processor.optimizely = msg.target.optimizely;
                 app.tabs[tabId].processor.setActiveExperiments();
                 console.log('isUsingPrePopulated:', app.tabs[tabId].processor.get('isUsingPrePopulated'));
-                
+                console.log('optimizely:', app.tabs[tabId].processor.optimizely);
+                console.log('activeExperiments:', app.tabs[tabId].processor.activeExperiments);                
                 break;
             }
           }
