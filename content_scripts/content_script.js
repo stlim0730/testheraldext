@@ -105,7 +105,7 @@ var tab = null;
             });
             injectScript(
               chrome.extension.getURL('injection_scripts/injection_script.js'),
-              msg.target['body']
+              msg.target.body
             );
             break;
         }

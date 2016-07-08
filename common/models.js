@@ -3,7 +3,9 @@ var Processor = Backbone.Model.extend({
     tabId: null,
     isFound: false,
     isUsingPrePopulated: false,
-    usePrePopulated: true
+    usePrePopulated: false,
+    useInactive: false,
+    forceUseInactive: false
   },
 
   _prePopulated: [
@@ -1220,6 +1222,40 @@ var Processor = Backbone.Model.extend({
       "iapi":{  
 
       }
+    },
+    {
+      "id":"6461231477",
+      "variations":[
+        {
+          "name":"Snapchat let my 14-year-old read sex stories",
+          "id":"6465280855",
+          "current":false
+        },
+        {
+          "code":"$(\"h1 > .postid-10273588, h3.postid-10273588, h2.postid-10273588\").text(\"Teen boy sues Snapchat over sexual content\");",
+          "name":"Teen boy sues Snapchat over sexual content",
+          "id":"6465280856",
+          "current":true
+        },
+        {
+          "code":"$(\"h1 > .postid-10273588, h3.postid-10273588, h2.postid-10273588\").text(\"Prudes sue Snapchat\");",
+          "name":"Prudes sue Snapchat",
+          "id":"6434484536",
+          "current":false
+        },
+        {
+          "code":"$(\"h1 > .postid-10273588, h3.postid-10273588, h2.postid-10273588\").text(\"Snapchat sued for exposing kids to sexual content\");",
+          "name":"Snapchat sued for exposing kids to sexual content",
+          "id":"6462331343",
+          "current":false
+        },
+        {
+          "code":"$(\"h1 > .postid-10273588, h3.postid-10273588, h2.postid-10273588\").text(\"Snapchat is accused of making kids perverts\");",
+          "name":"Snapchat is accused of making kids perverts",
+          "id":"6447051466",
+          "current":false
+        }
+      ]
     }
   ],
 
@@ -1242,7 +1278,12 @@ var Processor = Backbone.Model.extend({
       || obj.activeExperiments.length == 0) {
       
       if(!this.attributes.usePrePopulated) {
-        return this.activeExperiments;
+        if(this.attributes.useInactive) {
+          obj.activeExperiments = this.optimizely.allExperiments;
+        }
+        else {
+          return this.activeExperiments;
+        }
       }
       else {
         obj = this._prePopulated[this._prePopulatedPtr];
@@ -1251,13 +1292,21 @@ var Processor = Backbone.Model.extend({
       }
     }
 
-
     var _activeExperiments = obj.activeExperiments;
+
+    if (this.attributes.forceUseInactive) _activeExperiments = Object.keys(this.optimizely.allExperiments);
+
+    var unwrap = function(str, cnt) {
+      str = str.substring(1);
+      str = str.substring(0, str.length - 1);
+      return str.trim();
+    };
 
     for (var expIndex in _activeExperiments) {
 
       var expId = _activeExperiments[expIndex];
       var varIds = obj.allExperiments[expId].enabled_variation_ids;
+      if(varIds.length < 2) continue;
       var variations = [];
 
       for (var varIndex in varIds) {
@@ -1266,18 +1315,100 @@ var Processor = Backbone.Model.extend({
         var variation = obj.allVariations[varId];
         variation.id = varId;
         variation.current = false;
-        variation.name = variation.name.trim();
 
-        // Detect current condition
-        if (variation.name === obj.variationNamesMap[expId].trim()) {
-          // Only one of the variations
-          variation.current = true;
+        var headline = variation.code || '';
+
+        if(headline.includes('.text(') ||
+          (headline == '' && variation.name == 'Original')) {
+          //
+          // New York Post Rule
+          //
+          var i = headline.indexOf('text(');
+          if(i >= 0) {
+            headline = headline.substring(i + 4);
+          }
+          else {
+            var head = obj.allExperiments[expId].name.indexOf(']:');
+            headline = obj.allExperiments[expId].name.substring(head).replace(']:', '').trim();
+          }
+
+          if(headline.endsWith(';')) {
+            headline = headline.substring(0, headline.length - 1);
+          }
+
+          // Detect current condition
+          var currentArr = obj.variationIdsMap[expId];
+          console.log(currentArr);
+          if (Array.isArray(currentArr)
+            && currentArr.length >= 1
+            && currentArr.includes(varId)) {
+            variation.current = true;
+          }
+        }
+        else if(headline.includes('window.runSubscribeTest( true, \'')) {
+          //
+          // New York Times Rule 1: for subscription test
+          //
+          var i = headline.indexOf('window.runSubscribeTest( true, \'');
+          headline = headline.substring(i);
+          headline = headline.replace('window.runSubscribeTest( true, \'', '');
+          i = headline.indexOf(', \'SubscribeGoal\'');
+          headline = headline.substring(0, i);
+        }
+        else if(headline.includes('window.runComplexABTest(')) {
+          //
+          // New York Times Rule 2: for headline test
+          //
+          var exp = obj.allExperiments[expId];
+          var head = exp.name.indexOf(' ');
+          var fromExpName = exp.name.substring(head);
+          console.log('fromExpName', fromExpName);
+
+          var fromCode = obj.allVariations[varIds[varIndex]].code;
+          var head = fromCode.indexOf('window.runComplexABTest(');
+          fromCode = fromCode.substring(head).replace('window.runComplexABTest(', '').trim();
+          if (fromCode.includes('/*_optimizely_evaluate')) {
+            var cmtIndex = fromCode.indexOf('/*_optimizely_evaluate');
+            fromCode = fromCode.substring(0, cmtIndex).trim();
+          }
+          if (fromCode.endsWith(';')) {
+            fromCode = fromCode.substring(0, fromCode.length - 1).trim();
+          }
+          if (fromCode.endsWith(')')) {
+            fromCode = fromCode.substring(0, fromCode.length - 1).trim();
+          }
+
+          fromCode = fromCode.split(',');
+          fromCode.splice(0, 3);
+          fromCode.splice(fromCode.length - 2, 2);
+          fromCode = fromCode.join().trim();
+          console.log('fromCode', fromCode);
+
+          if(fromCode != null && (fromCode == '' || fromCode == '\'\'' || fromCode == fromExpName)) {
+            headline = fromExpName;
+          }
+          else {
+            headline = fromCode;
+          }
+
+          // TODO: detect current condition -- coudn't do this bc haven't seen live data
         }
 
-        // Replacing "Original" with real name: this must happen after detecting the current condition
-        if (variation.name === "Original") {
-          variation.name = obj.allExperiments[expId].name.split(":")[1].trim();
+        //
+        // Common Processing
+        //
+        headline = headline.trim();
+        while(
+          (headline.startsWith('(') && headline.endsWith(')'))
+          || (headline.startsWith('"') && headline.endsWith('"'))
+          || (headline.startsWith('\'') && headline.endsWith('\''))
+          || (headline.startsWith('&quot;') && headline.endsWith('&quot;'))
+          || (headline.startsWith('&#39;') && headline.endsWith('&#39;'))
+          ) {
+          headline = unwrap(headline, 1);
         }
+
+        variation.headline = headline;
 
         variations.push(variation);
       }

@@ -181,16 +181,23 @@ var app = {};
         // case 'injection':
           
         //   switch(msg.event) {
-            
-        //     case 'found optimizely':
-        //       console.log(msg.event);
+
+        //     case 'init':
+        //       //
         //       break;
         //   }
 
         //   break;
 
         case 'popup':
-          //
+          
+          switch(msg.event) {
+
+            case 'init':
+              //
+              break;
+          }
+
           break;
 
         default:
@@ -223,7 +230,32 @@ var app = {};
                 app.tabs[tabId].processor.setActiveExperiments();
                 console.log('isUsingPrePopulated:', app.tabs[tabId].processor.get('isUsingPrePopulated'));
                 console.log('optimizely:', app.tabs[tabId].processor.optimizely);
-                console.log('activeExperiments:', app.tabs[tabId].processor.activeExperiments);                
+                console.log('activeExperiments:', app.tabs[tabId].processor.activeExperiments);
+                // Activate desktop notification
+                var notification_opt = {
+                  type: 'basic',
+                  title: 'This page is experimenting on headlines.',
+                  message: 'Click the extension icon to find out more.',
+                  iconUrl: '../ui/images/icon38.png'
+                };
+                chrome.notifications.create('notification for ' + msg.event, notification_opt, function (notiId) {
+                  console.info('notiId:', notiId);
+                });
+                // Change the icon
+                chrome.pageAction.show(tabId);
+                // Change the tooltip
+                chrome.pageAction.setTitle({
+                  tabId: tabId,
+                  title: 'This page has Optimizely.'
+                });
+                // Pass Optimizely to popup
+
+                // ports['popup'].postMessage({
+                //   sender: 'background',
+                //   receiver: 'popup',
+                //   event: msg.event,
+                //   target: msg.target
+                // });
                 break;
             }
           }
