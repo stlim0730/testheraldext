@@ -11,11 +11,19 @@
   <body>
 
     <script id="experiment-template" type="text/x-handlebars-template">
-      <div class="list-group">
-        {{#each variations}}
-        <button type="button" class="list-group-item">{{#if current}}<strong>{{/if}}{{headline}}{{#if current}}</strong>{{/if}}</button>
+        {{#each activeExperiments}}
+        <br />
+        <p class="lead">Experiment {{inc @index}}</p>
+        <div class="list-group">
+          {{#each variations}}
+          <li class="list-group-item">
+          {{#if current}}<strong>{{/if}}
+            {{headline}}
+          {{#if current}}</strong>{{/if}}
+          </li>
+          {{/each}}
+        </div>
         {{/each}}
-      </div>
     </script>
 
   </body>

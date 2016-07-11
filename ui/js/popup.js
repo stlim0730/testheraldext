@@ -307,21 +307,6 @@
 //   }
 // });
 
-// $("a.twitter-share-button").click(function (e) {
-//   e.preventDefault();
-
-//   var prePopulText = $(this).data("text");
-
-//   chrome.windows.create({
-//     url: "https://twitter.com/intent/tweet?text=" + prePopulText + "&via=ProPublica",
-//     width: 680,
-//     height: 444,
-//     type: "panel",
-//     focused: true
-//   }, function (newWindow) {
-//     console.info("tweet popup window ID:", newWindow);
-//   });
-// });
 (function() {
   console.log('started:', 'popup');
 
@@ -337,5 +322,61 @@
     target: ''
   });
 
-  $(':focus').blur();
+  port.onMessage.addListener(function (msg) {
+    console.log('received a message:', msg);
+
+    switch(msg.sender) {
+
+      case 'background':
+
+        switch(msg.event) {
+          
+          case 'rendered in sandbox':
+            var count = msg.target.count;
+            if(count == 0) {
+              // Nothing to show
+              $("div.not-found").show();
+              $("div.found").hide();
+            }
+            else {
+              // Show something
+              $("div.not-found").hide();
+              $("div.found").show();
+
+              if(count < 2) { // Singular
+                count += ' experiment';
+              }
+              else { // Plural
+                count += ' experiments';
+              }
+              $('#experiment-count').text(count);
+              $('#active-experiments').html(msg.target.results);
+            }
+            break;
+        }
+
+      break;
+    }
+  });
+
+
+
+  $('a.share-on-twitter').click(function (e) {
+    e.preventDefault();
+
+    var prePopulText = $(this).data('text');
+
+    chrome.windows.create({
+      url: 'https://twitter.com/intent/tweet?text=' + prePopulText + '&via=ProPublica',
+      width: 680,
+      height: 444,
+      type: 'panel',
+      focused: true
+    }, function (newWindow) {
+      console.info('tweet popup window ID:', newWindow);
+    });
+  });
+
+
+
 })();

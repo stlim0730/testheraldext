@@ -175,6 +175,20 @@ var app = {};
                 target: ''
               });
               break;
+
+            case 'rendered in sandbox':
+              if (app.ports.popup) {
+                app.ports.popup.postMessage({
+                  sender: 'background',
+                  receiver: 'popup',
+                  event: msg.event,
+                  target: {
+                    results: msg.target.results,
+                    count: msg.target.count
+                  }
+                });
+              }
+              break;
           }
           break;
         
@@ -194,7 +208,24 @@ var app = {};
           switch(msg.event) {
 
             case 'init':
-              //
+              chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                if(tabs.length == 0) return; // It happens when 'Inspect Popup'
+                var tabId = tabs[0].id;
+                var activeExperiments = app.tabs[tabId].getActiveExperiments();
+
+                app.ports.sandbox.postMessage({
+                  sender: 'background',
+                  receiver: 'sandbox',
+                  event: 'render in sandbox',
+                  target: {
+                    templateName: 'experiment',
+                    count: activeExperiments.length,
+                    context: {
+                      activeExperiments: activeExperiments
+                    }
+                  }
+                });
+              });
               break;
           }
 
@@ -248,14 +279,6 @@ var app = {};
                   tabId: tabId,
                   title: 'This page has Optimizely.'
                 });
-                // Pass Optimizely to popup
-
-                // ports['popup'].postMessage({
-                //   sender: 'background',
-                //   receiver: 'popup',
-                //   event: msg.event,
-                //   target: msg.target
-                // });
                 break;
             }
           }

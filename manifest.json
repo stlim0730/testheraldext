@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "Optimizely Detector",
-  "description": "Optimizely Extension",
+  "name": "Name-of-the-app",
+  "description": "Desc-of-the-app",
   "version": "1.0",
 
   "permissions": [

@@ -33,6 +33,9 @@
   // Globals
   //
   var sbRenderer;
+  Handlebars.registerHelper('inc', function(value, options) {
+    return parseInt(value) + 1;
+  });
 
   //
   // Start
@@ -100,6 +103,19 @@
               // };
               // console.log(sbRenderer.sbRender('experiment', sampleContext));
               break;
+
+            case 'render in sandbox':
+              // Render in sandbox with context
+              var results = sbRenderer.sbRender(msg.target.templateName, msg.target.context);
+              port.postMessage({
+                sender: 'sandbox',
+                receiver: 'background',
+                event: 'rendered in sandbox',
+                target: {
+                  results: results,
+                  count: msg.target.count
+                }
+              });
           }
           break;
 

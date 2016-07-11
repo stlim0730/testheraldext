@@ -1421,7 +1421,7 @@ var Processor = Backbone.Model.extend({
       this.activeExperiments.push(experiment);
     }
 
-    return this.activeExperiments;
+    return this.activeExperiments.sort(function(a, b) { return b.current - a.current });
   }
 });
 
@@ -1549,6 +1549,10 @@ var Tab = Backbone.Model.extend({
 
   getOptimizely: function() {
     return this.processor.optimizely;
+  },
+
+  getActiveExperiments: function() {
+    return this.processor.activeExperiments;
   },
 
   getPort: function(portName) {
