@@ -1,59 +1,141 @@
-var injectScript = function (file, node) {
-  var th = document.getElementsByTagName(node)[0];
-  var s = document.createElement("script");
-  s.setAttribute("type", "text/javascript");
-  s.setAttribute("src", file);
-  (document.head || document.documentElement).appendChild(s);
-}
+// var injectScript = function (file, node) {
+//   var th = document.getElementsByTagName(node)[0];
+//   var s = document.createElement("script");
+//   s.setAttribute("type", "text/javascript");
+//   s.setAttribute("src", file);
+//   (document.head || document.documentElement).appendChild(s);
+// }
 
-// Print jQuery version
-if (typeof jQuery != "undefined") {  
-  // jQuery is loaded => print the version
-  console.info("jQuery found:", jQuery.fn.jquery);
-}
-else {
-  console.info("no jQuery");
-}
+// // Print jQuery version
+// if (typeof jQuery != "undefined") {  
+//   // jQuery is loaded => print the version
+//   console.info("jQuery found:", jQuery.fn.jquery);
+// }
+// else {
+//   console.info("no jQuery");
+// }
 
-var port = chrome.runtime.connect();
+// var port = chrome.runtime.connect();
 
-// Add a message handler that passes messages from injection to background
-window.addEventListener("message", function(event) {
-  // We only accept messages from ourselves
-  if (event.source != window)
-    return true;
+// // Add a message handler that passes messages from injection to background
+// window.addEventListener("message", function(event) {
+//   // We only accept messages from ourselves
+//   if (event.source != window)
+//     return true;
 
-  // Bypass the message received
-  if (event.data.sender === "injection"
-    && event.data.receiver === "background") {
-    console.info("[injection->content->background]", event.data);
-    port.postMessage(event.data);
+//   // Bypass the message received
+//   if (event.data.sender === "injection"
+//     && event.data.receiver === "background") {
+//     console.info("[injection->content->background]", event.data);
+//     port.postMessage(event.data);
+//   }
+// }, false);
+
+// // Start
+// $(document).ready(function () {
+//   port.postMessage({
+//     sender: "content",
+//     receiver: "background",
+//     event: "init",
+//     target: ""
+//   });
+
+//   port.onMessage.addListener(function (msg) {
+    
+//     console.info(msg);
+
+//     if (msg.event === "inject") {
+//       console.info(msg.target);
+
+//       injectScript(
+//         chrome.extension.getURL(msg.target["file"]),
+//         msg.target["elem"]
+//       );
+//     }
+
+//     return true;
+//   });
+// });
+// // End
+
+var tab = null;
+
+(function() {
+  console.log('started:', 'content');
+
+  //
+  // Globals
+  //
+
+  var tabName = btoa(new Date());
+
+  var injectScript = function (file, node) {
+    var th = document.getElementsByTagName(node)[0];
+    var s = document.createElement('script');
+    s.setAttribute('type', 'text/javascript');
+    s.setAttribute('src', file);
+    (document.head || document.documentElement).appendChild(s);
   }
-}, false);
-
-// Start
-$(document).ready(function () {
+  
+  //
+  // Start
+  //
+  
+  var port = chrome.extension.connect();
   port.postMessage({
-    sender: "content",
-    receiver: "background",
-    event: "init",
-    target: ""
+    sender: 'content' + tabName,
+    receiver: 'background',
+    event: 'init',
+    target: tabName
   });
 
   port.onMessage.addListener(function (msg) {
-    
-    console.info(msg);
+    console.log('received a message:', msg);
 
-    if (msg.event === "inject") {
-      console.info(msg.target);
+    switch(msg.sender) {
 
-      injectScript(
-        chrome.extension.getURL(msg.target["file"]),
-        msg.target["elem"]
-      );
+      case 'background':
+
+        switch(msg.event) {
+          
+          case 'init-feedback':
+            tab = new Tab({
+              name: tabName,
+              tabId: msg.target
+            });
+            injectScript(
+              chrome.extension.getURL('injection_scripts/injection_script.js'),
+              msg.target.body
+            );
+            break;
+        }
+
+      break;
     }
-
-    return true;
   });
-});
-// End
+
+  // Add an additional message handler (native) that passes messages from injection to background
+  window.addEventListener('message', function(event) {
+    // We only accept messages from ourselves
+    if (event.source != window)
+      return true;
+
+    // Bypass the message received
+    if (event.data.sender === 'injection'
+      && event.data.receiver === 'content') {
+      var optimizely = JSON.parse(event.data.target);
+      console.info('injection script found optimizely:', optimizely);
+
+      port.postMessage({
+        sender: 'content' + tabName,
+        receiver: 'background',
+        event: event.data.event,
+        target: {
+          tabId: tab.get('tabId'),
+          optimizely: optimizely
+        }
+      });
+    }
+  }, false);
+
+})();

@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "Optimizely Detector",
-  "description": "Optimizely Extension",
+  "name": "Name-of-the-app",
+  "description": "Desc-of-the-app",
   "version": "1.0",
 
   "permissions": [
@@ -19,6 +19,9 @@
       ],
       "js": [
         "common/jquery-2.2.4.min.js",
+        "common/underscore-min.js",
+        "common/backbone-min.js",
+        "common/models.js",
         "content_scripts/content_script.js"
       ],
       "run_at": "document_end"

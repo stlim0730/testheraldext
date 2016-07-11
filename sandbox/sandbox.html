@@ -3,16 +3,27 @@
   <head>
     <title>Sandbox for Popup</title>
     <script src="../common/jquery-2.2.4.min.js"></script>
+    <script src="../common/underscore-min.js"></script>
+    <script src="../common/backbone-min.js"></script>
+    <script src="../common/models.js"></script>
     <script src="js/handlebars-v4.0.5.js"></script>
   </head>
   <body>
 
     <script id="experiment-template" type="text/x-handlebars-template">
-      <div class="list-group">
-        {{#each variations}}
-        <button type="button" class="list-group-item">{{#if current}}<strong>{{/if}}{{name}}{{#if current}}</strong>{{/if}}</button>
+        {{#each activeExperiments}}
+        <br />
+        <p class="lead">Experiment {{inc @index}}</p>
+        <div class="list-group">
+          {{#each variations}}
+          <li class="list-group-item">
+          {{#if current}}<strong>{{/if}}
+            {{headline}}
+          {{#if current}}</strong>{{/if}}
+          </li>
+          {{/each}}
+        </div>
         {{/each}}
-      </div>
     </script>
 
   </body>
