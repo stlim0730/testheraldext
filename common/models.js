@@ -3,7 +3,7 @@ var Processor = Backbone.Model.extend({
     tabId: null,
     isFound: false,
     isUsingPrePopulated: false,
-    usePrePopulated: false,
+    usePrePopulated: true,
     useInactive: false,
     forceUseInactive: false
   },

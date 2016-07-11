@@ -285,8 +285,8 @@
 //       activeExperiments = processOptimizely(optimizely);
 
 //       if (activeExperiments.length == 0) {
-//         $("div.nothing-to-show").show();
-//         $("div.things-to-show").hide();
+//         $("div.not-found").show();
+//         $("div.found").hide();
 //       }
 //       else {
 //         // Request for render using handlebars in the sandbox
@@ -300,8 +300,8 @@
 //     }
 //     else if (msg.event === "sandbox rendered") {
 //       // console.info(msg.target);
-//       $("div.nothing-to-show").hide();
-//       $("div.things-to-show").show();
+//       $("div.not-found").hide();
+//       $("div.found").show();
 //       $("div.active-experiments").html(msg.target);
 //     }
 //   }
@@ -337,4 +337,5 @@
     target: ''
   });
 
+  $(':focus').blur();
 })();

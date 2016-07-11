@@ -2,48 +2,58 @@
 <html>
   <head>
     <title>Optimizely Default Popup</title>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/popup.css">
-    <script src="../common/jquery-2.2.4.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <link rel='stylesheet' type='text/css' href='css/bootswatch.simplex.min.css'>
+    <link rel='stylesheet' type='text/css' href='css/popup.css'>
+    <script src='../common/jquery-2.2.4.min.js'></script>
+    <script src='js/bootstrap.min.js'></script>
   </head>
   <body>
 
+    <a href='#' id='dummy-focus-catcher'></a>
 
-    <nav class="navbar navbar-default">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">Headlines being tested here</a>
-        <span class="debugging-note collapse small warning">* You're looking at prepopulated experiment data for debugging purpose.</span>
+    <nav class='navbar navbar-default'>
+      <div class='navbar-header'>
+        <a class='navbar-brand' href='https://www.propublica.org/' target='_blank' title='Find out more on ProPublica.org'>Name-of-the-app</a>
+        <span class='debugging-note collapse small warning'>* You're looking at prepopulated experiment data for debugging purpose.</span>
       </div>
     </nav>
 
 
-    <div class="container">
+    <div class='container'>
 
 
-      <div class="row">
-        <div class="col-xs-offset-6 col-xs-6" style="text-align:right">
-          <a class="btn btn-link" href="https://www.propublica.org/" target="_blank">Find out more</a>
-          <a class="btn btn-link twitter-share-button" data-text="Which headline would you be attracted to click?" href="#">Tweet</a>
+      <div class='row'>
+
+        <div class='col-xs-offset-7 col-xs-5'>
+          <p class='text-align'>
+            <a class='btn btn-link' href='https://www.propublica.org/' target='_blank' title='Find out more on ProPublica.org'>Find out more</a>
+            <a class='btn btn-link twitter-share-button' data-text='Which headline would you be attracted to click?' href='#'>Share</a>
+          </p>
         </div>
+
       </div>
 
-      <div class="row">
 
-        <div class="nothing-to-show collapse">
-          <div class="col-xs-offset-1 col-xs-10 well">
-            Currently, this page doesn't seem to be performing experiment.<br />Come back later!
+      <div class='row'>
+
+        <div class='not-found'>
+          <div class='col-xs-offset-1 col-xs-10 well'>
+            <p>Currently, this page doesn't seem to be performing experiment.</p>
+            <p>Come back later and see if there's any!</p>
+            <p>You may want to <a href='https://www.propublica.org/' target='_blank'>find out more</a> about the headline testing on ProPublica.org.</p>
           </div>
         </div>
 
-        <div class="things-to-show collapse">
-          <div class="col-xs-offset-1 col-xs-10 well">
-            These are the headline candidates this page is experimenting on.<br />Which headline would you click?
-          </div>
+        <div class='found collapse'>
+          <div class='col-xs-offset-1 col-xs-10 well'>
+            <p>This page now has <u id='num-experiments'></u> going.</p>
+            <p>These are the headline candidates for the same article that this page is experimenting on.</p>
 
-          <div class="active-experiments">
-          </div>
+            <div class='active-experiments'>
+            </div>
 
+            <p>Which does attract your attention the most? <a class='btn btn-link twitter-share-button' data-text='Which headline would you be attracted to click?' href='#'>Share</a> and talk about it with your friends!</p>
+          </div>
         </div>
 
       </div>
@@ -53,6 +63,6 @@
 
   </body>
 
-  <script src="js/popup.js"></script>
+  <script src='js/popup.js'></script>
 
 </html>
