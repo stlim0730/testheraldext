@@ -113,7 +113,8 @@
                 event: 'rendered in sandbox',
                 target: {
                   results: results,
-                  count: msg.target.count
+                  count: msg.target.count,
+                  siteName: msg.target.siteName
                 }
               });
           }

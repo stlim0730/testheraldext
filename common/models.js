@@ -1421,7 +1421,14 @@ var Processor = Backbone.Model.extend({
       this.activeExperiments.push(experiment);
     }
 
-    return this.activeExperiments.sort(function(a, b) { return b.current - a.current });
+    for(var expIndex in this.activeExperiments) {
+      var experiment = this.activeExperiments[expIndex];
+      experiment.variations.sort(function(a, b) {
+        return (a.current == b.current) ? 0 : (a.current ? -1 : 1);
+      });
+    }
+
+    return this.activeExperiments;
   }
 });
 

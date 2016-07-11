@@ -311,6 +311,17 @@
   console.log('started:', 'popup');
 
   //
+  // Globals
+  //
+
+  var headlineStructures = {
+    nypost: {
+      headlineSelector: 'h3',
+      headlineWrapper: 'div.headline-container'
+    }
+  };
+
+  //
   // Start
   //
   
@@ -332,16 +343,18 @@
         switch(msg.event) {
           
           case 'rendered in sandbox':
+            var url = msg.target.url;
+            console.log(url);
             var count = msg.target.count;
             if(count == 0) {
               // Nothing to show
-              $("div.not-found").show();
-              $("div.found").hide();
+              $('div.not-found').show();
+              $('div.found').hide();
             }
             else {
               // Show something
-              $("div.not-found").hide();
-              $("div.found").show();
+              $('div.not-found').hide();
+              $('div.found').show();
 
               if(count < 2) { // Singular
                 count += ' experiment';
@@ -351,6 +364,19 @@
               }
               $('#experiment-count').text(count);
               $('#active-experiments').html(msg.target.results);
+
+              $('div.list-group').click(function(e) {
+                var currentHeadline = $(this).find('strong.current-headline');
+                if(currentHeadline) {
+                  currentHeadline = currentHeadline.text();
+                  // Inject scroller and highlighter
+                  // var headlineStructure = headlineStructures[siteName];
+                  // headlineSelector
+                  // headlineWrapper
+                  // var targetHeadline = $('h3:contains(' + currentHeadline + ')');
+                  // console.log($(targetHeadline).offset());
+                }
+              });
             }
             break;
         }

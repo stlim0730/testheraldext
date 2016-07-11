@@ -184,7 +184,8 @@ var app = {};
                   event: msg.event,
                   target: {
                     results: msg.target.results,
-                    count: msg.target.count
+                    count: msg.target.count,
+                    url: msg.target.url
                   }
                 });
               }
@@ -211,6 +212,7 @@ var app = {};
               chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
                 if(tabs.length == 0) return; // It happens when 'Inspect Popup'
                 var tabId = tabs[0].id;
+                var url = tabs[0].url;
                 var activeExperiments = app.tabs[tabId].getActiveExperiments();
 
                 app.ports.sandbox.postMessage({
@@ -220,6 +222,7 @@ var app = {};
                   target: {
                     templateName: 'experiment',
                     count: activeExperiments.length,
+                    url: url,
                     context: {
                       activeExperiments: activeExperiments
                     }
