@@ -1,4 +1,4 @@
-// var injectScript = function (file, node) {
+// var injectScriptFile = function (file, node) {
 //   var th = document.getElementsByTagName(node)[0];
 //   var s = document.createElement("script");
 //   s.setAttribute("type", "text/javascript");
@@ -47,7 +47,7 @@
 //     if (msg.event === "inject") {
 //       console.info(msg.target);
 
-//       injectScript(
+//       injectScriptFile(
 //         chrome.extension.getURL(msg.target["file"]),
 //         msg.target["elem"]
 //       );
@@ -59,6 +59,7 @@
 // // End
 
 var tab = null;
+var test = 'testtest';
 
 (function() {
   console.log('started:', 'content');
@@ -69,11 +70,18 @@ var tab = null;
 
   var tabName = btoa(new Date());
 
-  var injectScript = function (file, node) {
-    var th = document.getElementsByTagName(node)[0];
+  var injectScriptFile = function (file, node) {
+    // var th = document.getElementsByTagName(node)[0];
     var s = document.createElement('script');
     s.setAttribute('type', 'text/javascript');
     s.setAttribute('src', file);
+    (document.head || document.documentElement).appendChild(s);
+  }
+
+  var injectInlineScript = function (code, node) {
+    var s = document.createElement('script');
+    s.setAttribute('type', 'text/javascript');
+    s.innerHTML = code;
     (document.head || document.documentElement).appendChild(s);
   }
   
@@ -103,10 +111,40 @@ var tab = null;
               name: tabName,
               tabId: msg.target
             });
-            injectScript(
-              chrome.extension.getURL('injection_scripts/injection_script.js'),
+            injectScriptFile(
+              chrome.extension.getURL('injection_scripts/detector.js'),
               msg.target.body
             );
+            break;
+
+          case 'highlight':
+            injectScriptFile(
+              chrome.extension.getURL('common/jquery-2.2.4.min.js'),
+              'body'
+            );
+            console.log($);
+            var currentHeadline = msg.target.currentHeadline;
+            var siteConfig = msg.target.siteConfig;
+            var headline = $(siteConfig.headlineSelector + ':contains(' + currentHeadline + ')');
+            if(headline.length > 0) {
+              headline = headline[0];
+              $(headline).addClass('headline-being-tested-current');
+              var wrapper = $(headline).closest(siteConfig.headlineWrapper);
+              $(wrapper).addClass('headline-wrapper-highlight');
+              
+              // Scroll
+              var offset = $(wrapper).offset().top;
+              var scrollScript = '$("body").animate({scrollTop: ' + offset + '}, 400);';
+              injectInlineScript(scrollScript, 'body');
+
+              // Highlight
+              var highlightScript = '$(".headline-wrapper-highlight").fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500);';
+              injectInlineScript(highlightScript, 'body');
+
+              // Overlay: too complicated because of injecting an event handler
+              // var overlayScript = '$(".headline-being-tested-current").html(["test1", "test2"])';
+              // injectInlineScript(overlayScript, 'body');
+            }
             break;
         }
 

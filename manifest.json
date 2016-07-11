@@ -34,7 +34,8 @@
   },
 
   "web_accessible_resources": [
-    "injection_scripts/injection_script.js"
+    "common/jquery-2.2.4.min.js",
+    "injection_scripts/detector.js"
   ],
 
   "page_action": {
