@@ -1259,10 +1259,11 @@ var Processor = Backbone.Model.extend({
     }
   ],
 
+  optimizely: null,
+
   activeExperiments: [],
 
   constructor: function(attr, opt) {
-    this.optimizely = null;
     this._prePopulatedPtr = Math.floor((Math.random() * this._prePopulated.length));
 
     Backbone.Model.apply(this, arguments);

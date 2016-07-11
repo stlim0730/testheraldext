@@ -145,10 +145,10 @@ var app = {};
   // Start
   //
 
-  chrome.runtime.onConnect.addListener(function (port) {
+  chrome.runtime.onConnect.addListener(function(port) {
     console.log('connected:', port);
 
-    port.onMessage.addListener(function (msg) {
+    port.onMessage.addListener(function(msg) {
       console.log('received a message:', msg);
 
       if(msg.sender && msg.sender.startsWith('content')) {
@@ -177,7 +177,7 @@ var app = {};
               break;
 
             case 'rendered in sandbox':
-              if (app.ports.popup) {
+              if(app.ports.popup) {
                 app.ports.popup.postMessage({
                   sender: 'background',
                   receiver: 'popup',
@@ -230,6 +230,21 @@ var app = {};
                 });
               });
               break;
+
+            case 'highlight':
+              chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                var tabId = tabs[0].id;
+                var tab = app.tabs[tabId];
+                var tabName = tab.get('name');
+
+                app.ports.content['content' + tabName].postMessage({
+                  sender: 'background',
+                  receiver: 'content' + tabName,
+                  event: 'highlight',
+                  target: msg.target
+                });
+              });
+              break;
           }
 
           break;
@@ -247,6 +262,7 @@ var app = {};
                     tabId: tabId
                   });
                   app.tabs[tabId] = tab;
+                  port.name = msg.target;//TODO: deal with disconnect
                   app.ports.content[msg.sender].postMessage({
                     sender: 'background',
                     receiver: msg.sender,
@@ -289,6 +305,21 @@ var app = {};
           break;
       }
     });
+
+
+    port.onDisconnect.addListener(function(port) {
+      console.log('disconnected:', port);
+      if(port.sender.url.endsWith('popup.html')) {
+        // app.
+      }
+      else {
+        //
+      }
+    });
+
+
   });
+
+
 
 })();

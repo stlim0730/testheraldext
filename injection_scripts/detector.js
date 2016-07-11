@@ -1,5 +1,3 @@
-// console.info("the injection code is running!");
-
 if (window['optimizely']) {
   // console.info('found optimizely:', window['optimizely']);
 

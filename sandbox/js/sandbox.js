@@ -114,7 +114,7 @@
                 target: {
                   results: results,
                   count: msg.target.count,
-                  siteName: msg.target.siteName
+                  url: msg.target.url
                 }
               });
           }
