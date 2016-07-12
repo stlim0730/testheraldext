@@ -84,7 +84,7 @@ var test = 'testtest';
     s.innerHTML = code;
     (document.head || document.documentElement).appendChild(s);
   }
-  
+
   //
   // Start
   //
@@ -124,6 +124,7 @@ var test = 'testtest';
             );
             console.log($);
             var currentHeadline = msg.target.currentHeadline;
+            currentHeadline = 'I got caught cheating through Pokémon Go';
             var siteConfig = msg.target.siteConfig;
             var headline = $(siteConfig.headlineSelector + ':contains(' + currentHeadline + ')');
             if(headline.length > 0) {
@@ -142,8 +143,8 @@ var test = 'testtest';
               injectInlineScript(highlightScript, 'body');
 
               // Overlay: too complicated because of injecting an event handler
-              // var overlayScript = '$(".headline-being-tested-current").html(["test1", "test2"])';
-              // injectInlineScript(overlayScript, 'body');
+              // ...
+              // ...
             }
             break;
         }
