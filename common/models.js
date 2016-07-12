@@ -9,7 +9,7 @@ var Processor = Backbone.Model.extend({
   },
 
   _prePopulated: [
-    {  
+    {
       "activeExperiments":[
         "6360074345"
       ],
@@ -1222,40 +1222,6 @@ var Processor = Backbone.Model.extend({
       "iapi":{  
 
       }
-    },
-    {
-      "id":"6461231477",
-      "variations":[
-        {
-          "name":"Snapchat let my 14-year-old read sex stories",
-          "id":"6465280855",
-          "current":false
-        },
-        {
-          "code":"$(\"h1 > .postid-10273588, h3.postid-10273588, h2.postid-10273588\").text(\"Teen boy sues Snapchat over sexual content\");",
-          "name":"Teen boy sues Snapchat over sexual content",
-          "id":"6465280856",
-          "current":true
-        },
-        {
-          "code":"$(\"h1 > .postid-10273588, h3.postid-10273588, h2.postid-10273588\").text(\"Prudes sue Snapchat\");",
-          "name":"Prudes sue Snapchat",
-          "id":"6434484536",
-          "current":false
-        },
-        {
-          "code":"$(\"h1 > .postid-10273588, h3.postid-10273588, h2.postid-10273588\").text(\"Snapchat sued for exposing kids to sexual content\");",
-          "name":"Snapchat sued for exposing kids to sexual content",
-          "id":"6462331343",
-          "current":false
-        },
-        {
-          "code":"$(\"h1 > .postid-10273588, h3.postid-10273588, h2.postid-10273588\").text(\"Snapchat is accused of making kids perverts\");",
-          "name":"Snapchat is accused of making kids perverts",
-          "id":"6447051466",
-          "current":false
-        }
-      ]
     }
   ],
 
