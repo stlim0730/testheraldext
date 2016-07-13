@@ -10,7 +10,7 @@ var test = 'testtest';
 
   var tabName = btoa(new Date());
 
-  var injectScriptFile = function (file, node) {
+  var injectScriptFile = function (file) {
     // var th = document.getElementsByTagName(node)[0];
     var s = document.createElement('script');
     s.setAttribute('type', 'text/javascript');
@@ -18,7 +18,7 @@ var test = 'testtest';
     (document.head || document.documentElement).appendChild(s);
   }
 
-  var injectInlineScript = function (code, node) {
+  var injectInlineScript = function (code) {
     var s = document.createElement('script');
     s.setAttribute('type', 'text/javascript');
     s.innerHTML = code;
@@ -65,12 +65,13 @@ var test = 'testtest';
               tabId: msg.target
             });
             injectScriptFile(
-              chrome.extension.getURL('injection_scripts/detector.js'),
-              msg.target.body
+              chrome.extension.getURL('injection_scripts/detector.js')
             );
+            break;
+
+          case 'inject jquery':
             injectScriptFile(
-              chrome.extension.getURL('common/jquery-2.2.4.min.js'),
-              msg.target.body
+              chrome.extension.getURL('common/jquery-2.2.4.min.js')
             );
             break;
 
