@@ -56,7 +56,8 @@ var app = {};
                   target: {
                     results: msg.target.results,
                     count: msg.target.count,
-                    url: msg.target.url
+                    url: msg.target.url,
+                    isUsingPrePopulated: msg.target.isUsingPrePopulated
                   }
                 });
               }
@@ -85,6 +86,7 @@ var app = {};
                 var tabId = tabs[0].id;
                 var url = tabs[0].url;
                 var activeExperiments = app.tabs[tabId].getActiveExperiments();
+                var isUsingPrePopulated = app.tabs[tabId].processor.get('isUsingPrePopulated');
 
                 app.ports.sandbox.postMessage({
                   sender: 'background',
@@ -96,7 +98,8 @@ var app = {};
                     url: url,
                     context: {
                       activeExperiments: activeExperiments
-                    }
+                    },
+                    isUsingPrePopulated: isUsingPrePopulated
                   }
                 });
               });
@@ -149,7 +152,8 @@ var app = {};
                 app.tabs[tabId].processor.set('isFound', true);
                 app.tabs[tabId].processor.optimizely = msg.target.optimizely;
                 app.tabs[tabId].processor.setActiveExperiments();
-                console.log('isUsingPrePopulated:', app.tabs[tabId].processor.get('isUsingPrePopulated'));
+                var isUsingPrePopulated = app.tabs[tabId].processor.get('isUsingPrePopulated');
+                console.log('isUsingPrePopulated:', isUsingPrePopulated);
                 console.log('optimizely:', app.tabs[tabId].processor.optimizely);
                 console.log('activeExperiments:', app.tabs[tabId].processor.activeExperiments);
                 // Activate desktop notification

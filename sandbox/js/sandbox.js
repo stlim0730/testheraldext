@@ -86,7 +86,8 @@
                 target: {
                   results: results,
                   count: msg.target.count,
-                  url: msg.target.url
+                  url: msg.target.url,
+                  isUsingPrePopulated: msg.target.isUsingPrePopulated
                 }
               });
           }
