@@ -1,11 +1,10 @@
-if (window['optimizely']) {
-  // console.info('found optimizely:', window['optimizely']);
-
+if (window.optimizely) {
   window.postMessage({
     sender: 'injection',
     receiver: 'content',
     event: 'found optimizely',
-    target: JSON.stringify(window.optimizely) // Message event doesn't seem to be good at nested objects; serialize them
+    target: JSON.stringify(window.optimizely)
+    // Message event sometimes fails with nested objects for some reason; serialize them.
   }, '*');
 }
 else {
