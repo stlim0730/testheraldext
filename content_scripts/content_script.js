@@ -68,26 +68,33 @@ var test = 'testtest';
               chrome.extension.getURL('injection_scripts/detector.js'),
               msg.target.body
             );
+            injectScriptFile(
+              chrome.extension.getURL('common/jquery-2.2.4.min.js'),
+              msg.target.body
+            );
             break;
 
           case 'highlight':
-            injectScriptFile(
-              chrome.extension.getURL('common/jquery-2.2.4.min.js'),
-              'body'
-            );
-            console.log($);
             var currentHeadline = msg.target.currentHeadline;
-            currentHeadline = 'I got caught cheating through Pokémon Go';
+            // TODO: temporary currentHeadline in debugging mode
             var siteConfig = msg.target.siteConfig;
-            var headline = $(siteConfig.headlineSelector + ':contains(' + currentHeadline + ')');
-            if(headline.length > 0) {
-              headline = headline[0];
+            var headline = null;
+            var index = -1;
+            for(var _index in siteConfig.headlineSelector) {
+              headline = $(siteConfig.headlineSelector[_index] + ':contains(' + currentHeadline + ')')[0];
+              if(headline) {
+                index = _index; // index of the corresponding wrapper class
+                break;
+              }
+            }
+            if(headline) {
+              console.info(headline);
               $(headline).addClass('headline-being-tested-current');
-              var wrapper = $(headline).closest(siteConfig.headlineWrapper);
+              var wrapper = $(headline).closest(siteConfig.headlineWrapper[index]);
               $(wrapper).addClass('headline-wrapper-highlight');
-              
-              // Scroll
-              var offset = $(wrapper).offset().top;
+
+              // Scroll ###GIVES ME ERRORS!!!
+              var offset = $(wrapper).offset().top - siteConfig.scrollTopMargin;
               var scrollScript = '$("body").animate({scrollTop: ' + offset + '}, 400);';
               injectInlineScript(scrollScript, 'body');
 

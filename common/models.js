@@ -1534,7 +1534,8 @@ var Processor = Backbone.Model.extend({
         var varId = varIds[varIndex];
         var variation = obj.allVariations[varId];
         variation.id = varId;
-        variation.current = false;
+        var current = false;
+        variation.current = current; // by default
 
         var headline = variation.code || '';
 
@@ -1562,7 +1563,7 @@ var Processor = Backbone.Model.extend({
           if (Array.isArray(currentArr)
             && currentArr.length >= 1
             && currentArr.includes(varId)) {
-            variation.current = true;
+            current = true;
           }
         }
         else if(headline.includes('window.runSubscribeTest( true, \'')) {
@@ -1574,6 +1575,13 @@ var Processor = Backbone.Model.extend({
           headline = headline.replace('window.runSubscribeTest( true, \'', '');
           i = headline.indexOf(', \'SubscribeGoal\'');
           headline = headline.substring(0, i);
+
+          if(obj.variationIdsMap[expId].length > 0) {
+            var currentHeadlineId = obj.variationIdsMap[expId][0];
+            if(varId == currentHeadlineId) {
+              current = true;
+            }
+          }
         }
         else if(headline.includes('window.runComplexABTest(')) {
           //
@@ -1582,8 +1590,7 @@ var Processor = Backbone.Model.extend({
           var exp = obj.allExperiments[expId];
           var head = exp.name.indexOf(' ');
           var fromExpName = exp.name.substring(head);
-          console.log('fromExpName', fromExpName);
-
+          
           var fromCode = obj.allVariations[varIds[varIndex]].code;
           var head = fromCode.indexOf('window.runComplexABTest(');
           fromCode = fromCode.substring(head).replace('window.runComplexABTest(', '').trim();
@@ -1602,7 +1609,6 @@ var Processor = Backbone.Model.extend({
           fromCode.splice(0, 3);
           fromCode.splice(fromCode.length - 2, 2);
           fromCode = fromCode.join().trim();
-          console.log('fromCode', fromCode);
 
           if(fromCode != null && (fromCode == '' || fromCode == '\'\'' || fromCode == fromExpName)) {
             headline = fromExpName;
@@ -1611,7 +1617,12 @@ var Processor = Backbone.Model.extend({
             headline = fromCode;
           }
 
-          // TODO: detect current condition -- coudn't do this bc haven't seen any live data
+          if(obj.variationIdsMap[expId].length > 0) {
+            var currentHeadlineId = obj.variationIdsMap[expId][0];
+            if(varId == currentHeadlineId) {
+              current = true;
+            }
+          }
         }
 
         //
@@ -1628,10 +1639,11 @@ var Processor = Backbone.Model.extend({
           headline = unwrap(headline, 1);
         }
 
-        // This is only for New York Times subscription label test: it ends with \'
+        // This is only for New York Times Rule 1 (subscription label test): it ends with \'
         if(headline.endsWith('\'')) headline = headline.substring(0, headline.length - 1).trim();
 
         variation.headline = headline;
+        variation.current = current;
 
         variations.push(variation);
       }
