@@ -1490,22 +1490,25 @@ var Processor = Backbone.Model.extend({
 
     var obj = this.optimizely;
 
-    // Error handling: optimizely is not usable
+    // Error handling: optimizely is not usable or exist
     if(obj.activeExperiments == null
       || obj.activeExperiments.length == 0) {
-      
+
       if(!this.attributes.usePrePopulated) {
         if(this.attributes.useInactive) {
+          // Decided to use one of past data of the news site: only debugging purpose
+          // TODO: not perfectly tested
           obj.activeExperiments = this.optimizely.allExperiments;
         }
         else {
+          // Just return an emply array: nothing to show
           return this.activeExperiments;
         }
       }
       else {
+        // Decided to use prepopulated data
         obj = this._prePopulated[this._prePopulatedPtr];
         this.attributes.isUsingPrePopulated = true;
-        // $("span.debugging-note").show();
       }
     }
 
@@ -1625,6 +1628,9 @@ var Processor = Backbone.Model.extend({
           headline = unwrap(headline, 1);
         }
 
+        // This is only for New York Times subscription label test: it ends with \'
+        if(headline.endsWith('\'')) headline = headline.substring(0, headline.length - 1).trim();
+
         variation.headline = headline;
 
         variations.push(variation);
@@ -1658,15 +1664,19 @@ var SandboxRenderer = Backbone.Model.extend({
     this.templates = {};
     this.compileFunction = {};
 
-    var srcName = tempName = '';
-    for(var srcIndex in attr.sources) { // an array of sourceName-sourceElemId pairs
+    var sourceName = templateName = '';
+    for(var srcIndex in attr.sources) {
+      // attr.sources is an array of key (sourceName) - value (sourceText) pairs. For example,
+      // sources:[
+      //   { experiment: $('#experiment-template').html() }
+      // ]
       var source = attr.sources[srcIndex];
-      srcName = tempName = Object.keys(source)[0];
-      var srcText = source[srcName];
-      this._setSource(srcName, srcText);
+      sourceName = templateName = Object.keys(source)[0]; // the only key in the source object; experiment in the example above
+      var sourceText = source[sourceName];
+      this._setSource(sourceName, sourceText);
     }
 
-    this._setTemplate(tempName, attr.compileFunction);
+    this._setTemplate(templateName, attr.compileFunction);
     
     Backbone.Model.apply(this, arguments);
   },

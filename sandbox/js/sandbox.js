@@ -1,31 +1,3 @@
-// window.addEventListener("message", function (msg) {
-//   // if (msg.data.receiver !== "sandbox") return true;
-
-//   console.info(msg.data);
-
-//   if (msg.data.sender === "background") {
-//     if (msg.data.event === "sandbox render") {
-//       var results = "";
-//       var source = $("#experiment-template").html();
-//       var template = {};
-//       template["experiment"] = Handlebars.compile(source);
-//       var contexts = JSON.parse(msg.data.target);
-
-//       for (var index in contexts) {
-//         var context = contexts[index];
-//         var result = template["experiment"](context);
-//         results += result;
-//       }
-
-//       port.postMessage({
-//         sender: "sandbox",
-//         receiver: "background",
-//         event: "sandbox rendered",
-//         target: results
-//       });
-//     }
-//   }
-// });
 (function() {
   console.log('started:', 'sandbox');
 
@@ -67,6 +39,10 @@
                 ],
                 compileFunction: Handlebars.compile
               });
+              break;
+
+            case 'render in sandbox':
+              // Render in sandbox with context. For example,
               // var sampleContext = {  
               //   "id":"6405201336",
               //   "variations":[  
@@ -102,10 +78,6 @@
               //   ]
               // };
               // console.log(sbRenderer.sbRender('experiment', sampleContext));
-              break;
-
-            case 'render in sandbox':
-              // Render in sandbox with context
               var results = sbRenderer.sbRender(msg.target.templateName, msg.target.context);
               port.postMessage({
                 sender: 'sandbox',
