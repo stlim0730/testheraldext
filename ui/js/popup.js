@@ -7,8 +7,16 @@ console.log('started:', 'popup');
 var siteConfigs = {
   nypost: {
     name: 'New York Post',
-    headlineSelector: 'h3',
-    headlineWrapper: 'article'
+    headlineSelector: ['h3'],
+    headlineWrapper: ['article'],
+    scrollTopMargin: 100
+  },
+
+  nytimes: {
+    name: 'New York Times',
+    headlineSelector: ['a', 'span'],
+    headlineWrapper: ['article', 'div'],
+    scrollTopMargin: 150
   }
 };
 
@@ -69,7 +77,7 @@ port.onMessage.addListener(function (msg) {
             $('#active-experiments').html(msg.target.results);
             
             $('li.list-group-item').click(function(e) {
-              var currentHeadline = $(this).find('strong.current-headline');
+              var currentHeadline = $(this).parent('div.list-group').find('strong.current-headline');
               if(currentHeadline) {
                 currentHeadline = currentHeadline.text().trim();
                 var siteConfig = siteConfigs[siteKey];
