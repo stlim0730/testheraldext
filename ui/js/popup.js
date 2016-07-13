@@ -1,114 +1,113 @@
-(function() {
-  console.log('started:', 'popup');
+console.log('started:', 'popup');
 
-  //
-  // Globals
-  //
+//
+// Globals
+//
 
-  var siteConfigs = {
-    nypost: {
-      name: 'New York Post',
-      headlineSelector: 'h3',
-      headlineWrapper: 'article'
-    }
-  };
+var siteConfigs = {
+  nypost: {
+    name: 'New York Post',
+    headlineSelector: 'h3',
+    headlineWrapper: 'article'
+  }
+};
 
-  //
-  // Start
-  //
-  
-  var port = chrome.extension.connect();
-  port.postMessage({
-    sender: 'popup',
-    receiver: 'background',
-    event: 'init',
-    target: ''
-  });
+//
+// Start
+//
 
+var port = chrome.extension.connect();
+port.postMessage({
+  sender: 'popup',
+  receiver: 'background',
+  event: 'init',
+  target: ''
+});
 
 
-  port.onMessage.addListener(function (msg) {
-    console.log('received a message:', msg);
 
-    switch(msg.sender) {
+port.onMessage.addListener(function (msg) {
+  console.log('received a message:', msg);
 
-      case 'background':
+  switch(msg.sender) {
 
-        switch(msg.event) {
-          
-          case 'rendered in sandbox':
-            var url = msg.target.url;
-            var siteKey = null;
-            for(var key in siteConfigs) {
-              if(url.includes(key)) {
-                siteKey = key;
-                break;
-              }
+    case 'background':
+
+      switch(msg.event) {
+        
+        case 'rendered in sandbox':
+          var url = msg.target.url;
+          var siteKey = null;
+          for(var key in siteConfigs) {
+            if(url.includes(key)) {
+              siteKey = key;
+              break;
             }
-            var count = msg.target.count;
-            if(count == 0) {
-              // Nothing to show
-              $('div.not-found').show();
-              $('div.found').hide();
+          }
+          var count = msg.target.count;
+          if(count == 0) {
+            // Nothing to show
+            $('div.not-found').show();
+            $('div.found').hide();
+          }
+          else {
+            // Show something
+            if(msg.target.isUsingPrePopulated) {
+              $('span.debug-note').show();
             }
-            else {
-              // Show something
-              $('div.not-found').hide();
-              $('div.found').show();
 
-              if(count < 2) { // Singular
-                count += ' experiment';
-              }
-              else { // Plural
-                count += ' experiments';
-              }
-              $('#experiment-count').text(count);
-              $('#active-experiments').html(msg.target.results);
-              
-              $('li.list-group-item').click(function(e) {
-                var currentHeadline = $(this).find('strong.current-headline');
-                if(currentHeadline) {
-                  currentHeadline = currentHeadline.text().trim();
-                  var siteConfig = siteConfigs[siteKey];
+            $('div.not-found').hide();
+            $('div.found').show();
 
-                  // Highlight
-                  port.postMessage({
-                    sender: 'popup',
-                    receiver: 'background',
-                    event: 'highlight',
-                    target: {
-                      currentHeadline: currentHeadline,
-                      siteConfig: siteConfig
-                    }
-                  });
-                }
-              });
+            if(count < 2) { // Singular
+              count += ' experiment';
             }
-            break;
-        }
+            else { // Plural
+              count += ' experiments';
+            }
+            $('#experiment-count').text(count);
+            $('#active-experiments').html(msg.target.results);
+            
+            $('li.list-group-item').click(function(e) {
+              var currentHeadline = $(this).find('strong.current-headline');
+              if(currentHeadline) {
+                currentHeadline = currentHeadline.text().trim();
+                var siteConfig = siteConfigs[siteKey];
 
-      break;
-    }
+                // Highlight
+                port.postMessage({
+                  sender: 'popup',
+                  receiver: 'background',
+                  event: 'highlight',
+                  target: {
+                    currentHeadline: currentHeadline,
+                    siteConfig: siteConfig
+                  }
+                });
+              }
+            });
+          }
+          break;
+      }
+
+    break;
+  }
+});
+
+
+
+$('a.share-on-twitter').click(function (e) {
+  e.preventDefault();
+
+  var prePopulText = $(this).data('text');
+
+  chrome.windows.create({
+    url: 'https://twitter.com/intent/tweet?text=' + prePopulText + '&via=ProPublica',
+    width: 680,
+    height: 444,
+    type: 'panel',
+    focused: true
+  }, function (newWindow) {
+    console.info('tweet popup window ID:', newWindow);
   });
-
-
-
-  $('a.share-on-twitter').click(function (e) {
-    e.preventDefault();
-
-    var prePopulText = $(this).data('text');
-
-    chrome.windows.create({
-      url: 'https://twitter.com/intent/tweet?text=' + prePopulText + '&via=ProPublica',
-      width: 680,
-      height: 444,
-      type: 'panel',
-      focused: true
-    }, function (newWindow) {
-      console.info('tweet popup window ID:', newWindow);
-    });
-  });
-
-
-
-})();
+});
