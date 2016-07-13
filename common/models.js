@@ -1222,6 +1222,256 @@ var Processor = Backbone.Model.extend({
       "iapi":{  
 
       }
+    },
+    {  
+      "activeExperiments":[  
+        "5355901213",
+        "6518261295",
+        "6269850443"
+      ],
+      "allExperiments":{  
+        "5355901213":{  
+          "audiences":[  
+            5356961117
+          ],
+          "variation_weights":{  
+            "5361970061":10000
+          },
+          "uses_geotargeting":true,
+          "name":"HP Footer Subscribe Links - Domestic",
+          "enabled":true,
+          "variation_ids":[  
+            "5352520319",
+            "5361970061"
+          ],
+          "urls":[  
+            {  
+              "match":"substring",
+              "value":"http://international.nytimes.com"
+            },
+            {  
+              "match":"substring",
+              "value":"http://www.nytimes.com"
+            }
+          ],
+          "enabled_variation_ids":[  
+            "5361970061"
+          ]
+        },
+        "6518261295":{  
+          "code":"/*_optimizely_evaluate=force */ \nwindow.runComplexABTest = function( assetId, swapHed, swapSum, newHeadline, newSummary, goalName ) {if (swapHed && assetId && newHeadline) {window.headInterval = setInterval(function() {var headline = $('article#topnews-' + assetId + ' .story-heading a').first();if (headline.length > 0) {headline.html(newHeadline);clearInterval(window.headInterval);}}, 50);}if (swapSum && assetId && newSummary) {window.sumInterval = setInterval(function() {var summary = $('article#topnews-' + assetId + ' .summary').first();if (summary.length > 0) {summary.html(newSummary);clearInterval(window.sumInterval);}}, 50);}if (goalName) {$('article#topnews-' + assetId + ' .story-heading a').live('mousedown', function() {window.optimizely.push(['trackEvent', goalName]);});}};\n/*_optimizely_evaluate=safe */",
+          "variation_weights":{  
+            "6512011305":5000,
+            "6512011306":5000
+          },
+          "name":"100000004526647_1468420779271 Yale Drops Case Against Worker Who Smashed Window",
+          "enabled":true,
+          "variation_ids":[  
+            "6512011305",
+            "6512011306"
+          ],
+          "urls":[  
+            {  
+              "match":"simple",
+              "value":"http://www.nytimes.com/"
+            }
+          ],
+          "enabled_variation_ids":[  
+            "6512011305",
+            "6512011306"
+          ]
+        },
+        "6269850443":{  
+          "code":"/*_optimizely_evaluate=force */\nwindow.runSubscribeTest = function(runTest, language, goalName) {\n    if (runTest && language) {\n        window.headInterval = setInterval(function() {\n            var headline = $('#subscribe-msg').first();\n            if (language.length > 0) {\n                headline.html(language);\n                clearInterval(window.headInterval);\n            }\n        }, 50);\n    }\n   \n    if (goalName) {\n        $('#subscribe-lang-1 a').live('mousedown', function() {\n            window.optimizely.push(['trackEvent', goalName]);\n        });\n    }\n};\n/*_optimizely_evaluate=safe */",
+          "variation_weights":{  
+            "6261770338":5000,
+            "6275461442":5000
+          },
+          "name":"Subscribe Promo AB",
+          "enabled":true,
+          "variation_ids":[  
+            "6278980107",
+            "6261770338",
+            "6275461442"
+          ],
+          "urls":[  
+            {  
+              "match":"simple",
+              "value":"http://www.nytimes.com/"
+            }
+          ],
+          "enabled_variation_ids":[  
+            "6261770338",
+            "6275461442"
+          ]
+        }
+      },
+      "allVariations":{  
+        "5361970061":{  
+          "code":"$(\".home-delivery > a\").attr({\"href\":\"http://www.nytimes.com/digitalleftnav\"});\n$(\".home-delivery > a\").text(\"Home Delivery\");\n$(\".home-delivery > a\").attr({\"href\":\"http://www.nytimes.com/hdleftnav\"});\n$(\".digital-subscriptions > a\").attr({\"href\":\"http://www.nytimes.com/digitalleftnav\"});",
+          "name":"Variation #1"
+        },
+        "6512011305":{  
+          "code":"/*_optimizely_evaluate=force */ \nwindow.runComplexABTest( 100000004526647, 'false', 'false', '', '', '100000004526647_1468420779271' );\n/*_optimizely_evaluate=safe */",
+          "id":"6512011305",
+          "current":false,
+          "headline":"Yale Drops Case Against Worker Who Smashed Window"
+        },
+        "6512011306":{  
+          "code":"/*_optimizely_evaluate=force */ \nwindow.runComplexABTest( 100000004526647, 'true', 'false', 'A Yale Window Depicted Slavery. A Worker Smashed It.', '', '100000004526647_1468420779271' );\n/*_optimizely_evaluate=safe */",
+          "name":"A Yale Window Depicted Slavery. A Worker Smashed It.",
+          "id":"6512011306",
+          "current":false,
+          "headline":"A Yale Window Depicted Slavery. A Worker Smashed It."
+        },
+        "6261770338":{  
+          "code":"/*_optimizely_evaluate=force */ \nwindow.runSubscribeTest( true, 'You count on us for the facts. We count on you for support.', 'SubscribeGoal' );\n/*_optimizely_evaluate=safe */",
+          "name":"Count on us for facts",
+          "id":"6261770338",
+          "current":false,
+          "headline":"You count on us for the facts. We count on you for support.'"
+        },
+        "6275461442":{  
+          "code":"/*_optimizely_evaluate=force */ \nwindow.runSubscribeTest( true, 'Your support is crucial to our mission', 'SubscribeGoal' );\n/*_optimizely_evaluate=safe */",
+          "name":"Support Crucial to Mission",
+          "id":"6275461442",
+          "current":false,
+          "headline":"Your support is crucial to our mission'"
+        }
+      },
+      "all_experiments":{  
+        "5355901213":{  
+          "audiences":[  
+            5356961117
+          ],
+          "variation_weights":{  
+            "5361970061":10000
+          },
+          "uses_geotargeting":true,
+          "name":"HP Footer Subscribe Links - Domestic",
+          "enabled":true,
+          "variation_ids":[  
+            "5352520319",
+            "5361970061"
+          ],
+          "urls":[  
+            {  
+              "match":"substring",
+              "value":"http://international.nytimes.com"
+            },
+            {  
+              "match":"substring",
+              "value":"http://www.nytimes.com"
+            }
+          ],
+          "enabled_variation_ids":[  
+            "5361970061"
+          ]
+        },
+        "6518261295":{  
+          "code":"/*_optimizely_evaluate=force */ \nwindow.runComplexABTest = function( assetId, swapHed, swapSum, newHeadline, newSummary, goalName ) {if (swapHed && assetId && newHeadline) {window.headInterval = setInterval(function() {var headline = $('article#topnews-' + assetId + ' .story-heading a').first();if (headline.length > 0) {headline.html(newHeadline);clearInterval(window.headInterval);}}, 50);}if (swapSum && assetId && newSummary) {window.sumInterval = setInterval(function() {var summary = $('article#topnews-' + assetId + ' .summary').first();if (summary.length > 0) {summary.html(newSummary);clearInterval(window.sumInterval);}}, 50);}if (goalName) {$('article#topnews-' + assetId + ' .story-heading a').live('mousedown', function() {window.optimizely.push(['trackEvent', goalName]);});}};\n/*_optimizely_evaluate=safe */",
+          "variation_weights":{  
+            "6512011305":5000,
+            "6512011306":5000
+          },
+          "name":"100000004526647_1468420779271 Yale Drops Case Against Worker Who Smashed Window",
+          "enabled":true,
+          "variation_ids":[  
+            "6512011305",
+            "6512011306"
+          ],
+          "urls":[  
+            {  
+              "match":"simple",
+              "value":"http://www.nytimes.com/"
+            }
+          ],
+          "enabled_variation_ids":[  
+            "6512011305",
+            "6512011306"
+          ]
+        },
+        "6269850443":{  
+          "code":"/*_optimizely_evaluate=force */\nwindow.runSubscribeTest = function(runTest, language, goalName) {\n    if (runTest && language) {\n        window.headInterval = setInterval(function() {\n            var headline = $('#subscribe-msg').first();\n            if (language.length > 0) {\n                headline.html(language);\n                clearInterval(window.headInterval);\n            }\n        }, 50);\n    }\n   \n    if (goalName) {\n        $('#subscribe-lang-1 a').live('mousedown', function() {\n            window.optimizely.push(['trackEvent', goalName]);\n        });\n    }\n};\n/*_optimizely_evaluate=safe */",
+          "variation_weights":{  
+            "6261770338":5000,
+            "6275461442":5000
+          },
+          "name":"Subscribe Promo AB",
+          "enabled":true,
+          "variation_ids":[  
+            "6278980107",
+            "6261770338",
+            "6275461442"
+          ],
+          "urls":[  
+            {  
+              "match":"simple",
+              "value":"http://www.nytimes.com/"
+            }
+          ],
+          "enabled_variation_ids":[  
+            "6261770338",
+            "6275461442"
+          ]
+        }
+      },
+      "data":{  
+
+      },
+      "iapi":{  
+        "revision":3716
+      },
+      "variationIdsMap":{  
+        "5355901213":[  
+          "5361970061"
+        ],
+        "6269850443":[  
+          "6275461442"
+        ],
+        "6455440622":[  
+          "6462540676"
+        ],
+        "6459951494":[  
+          "6458121630"
+        ],
+        "6462231828":[  
+          "6466143600"
+        ],
+        "6487211611":[  
+          "6484840088"
+        ],
+        "6518261295":[  
+          "6512011306"
+        ]
+      },
+      "variationMap":{  
+        "5355901213":1,
+        "6269850443":2,
+        "6455440622":0,
+        "6459951494":0,
+        "6462231828":0,
+        "6487211611":0,
+        "6518261295":1
+      },
+      "variationNamesMap":{  
+        "5355901213":"Variation #1",
+        "6269850443":"Support Crucial to Mission",
+        "6455440622":"Var 6462540676",
+        "6459951494":"Var 6458121630",
+        "6462231828":"Var 6466143600",
+        "6487211611":"Var 6484840088",
+        "6518261295":"A Yale Window Depicted Slavery. A Worker Smashed It."
+      },
+      "variation_map":{  
+        "5355901213":1,
+        "6269850443":2,
+        "6455440622":0,
+        "6459951494":0,
+        "6462231828":0,
+        "6487211611":0,
+        "6518261295":1
+      }
     }
   ],
 
@@ -1358,7 +1608,7 @@ var Processor = Backbone.Model.extend({
             headline = fromCode;
           }
 
-          // TODO: detect current condition -- coudn't do this bc haven't seen live data
+          // TODO: detect current condition -- coudn't do this bc haven't seen any live data
         }
 
         //
@@ -1396,61 +1646,6 @@ var Processor = Backbone.Model.extend({
     }
 
     return this.activeExperiments;
-  }
-});
-
-
-
-var Messenger = Backbone.Model.extend({
-  defaults: {
-    name: null,
-    tabId: null,
-    connected: false
-  },
-
-  constructor: function(attr, opt) {
-    this.ports = null;
-    this.handlers = null;
-
-    Backbone.Model.apply(this, arguments);
-  },
-
-  initialize: function(attr, opt) {
-    console.log('initialized', 'Messenger', this);
-
-    this.on('change:connected', function() {
-      console.log('change', 'connected', this);
-    });
-  },
-
-  addPort: function(portName, port) {
-    this.ports[portName] = port;
-  },
-
-  removePort: function(portName) {
-    if(portName in this.ports) {
-      this.ports[portName] = null;
-      delete this.ports[portName];
-    }
-  },
-
-  send: function(receiver, message) {
-    var port = this.ports[receiver];
-    if(port && port.postMessage) {
-      port.postMessage({
-        sender: this.name,
-        receiver: receiver,
-        content: msg
-      });
-    }
-    else {
-      console.error('cannot send a message to', receiver);
-    }
-  },
-
-  addMessageHandler: function(eventName, handlerFunc) {
-    this.handlers[eventName] = handlerFunc;
-    // TODO: real binding between events and handlers?
   }
 });
 
@@ -1507,7 +1702,6 @@ var Tab = Backbone.Model.extend({
   },
 
   constructor: function(attr, opt) {
-    this.messenger = new Messenger(attr);
     this.processor = new Processor(attr);
 
     Backbone.Model.apply(this, arguments);
@@ -1527,13 +1721,5 @@ var Tab = Backbone.Model.extend({
 
   getActiveExperiments: function() {
     return this.processor.activeExperiments;
-  },
-
-  getPort: function(portName) {
-    if(portName) {
-      return this.messenger.ports[portName];
-    }
-
-    return this.messenger.ports;
   }
 });
