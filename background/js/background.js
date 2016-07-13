@@ -308,13 +308,27 @@ var app = {};
 
 
     port.onDisconnect.addListener(function(port) {
-      console.log('disconnected:', port);
+      var disconnector = null;
+
       if(port.sender.url.endsWith('popup.html')) {
-        // app.
+        // Do nothing
+        disconnector = 'popup';
+      }
+      else if (port.sender.tab) {
+        var tabId = port.sender.tab.id;
+        var portName = 'content' + port.name;
+        disconnector = 'port: ' + port.name + 'tab: ' + tabId;
+        app.ports.content[portName] = null
+        app.tabs[tabId] = null;
+
+        delete app.ports[portName];
+        delete app.tabs[tabId];
       }
       else {
-        //
+        console.log('I don\'t know what has been disconnected.');
       }
+
+      console.log('disconnected:', disconnector, port);
     });
 
 
