@@ -107,6 +107,7 @@ var app = {};
 
             case 'highlight':
               chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                if(tabs.length == 0) return; // It happens when 'Inspect Popup'
                 var tabId = tabs[0].id;
                 var tab = app.tabs[tabId];
                 var tabName = tab.get('name');
@@ -130,6 +131,7 @@ var app = {};
               
               case 'init':
                 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                  if(tabs.length == 0) return; // It happens when 'Inspect Popup'
                   var tabId = tabs[0].id;
                   var tab = new Tab({
                     name: msg.target,
@@ -172,6 +174,14 @@ var app = {};
                 chrome.pageAction.setTitle({
                   tabId: tabId,
                   title: 'This page has Optimizely.'
+                });
+                // Inject jQuery for this specific page
+                var tabName = app.tabs[tabId].get('name');
+                app.ports.content['content' + tabName].postMessage({
+                  sender: 'background',
+                  receiver: 'content' + tabName,
+                  event: 'inject jquery',
+                  target: ''
                 });
                 break;
             }

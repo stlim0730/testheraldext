@@ -1490,12 +1490,12 @@ var Processor = Backbone.Model.extend({
 
     var obj = this.optimizely;
 
-    // Error handling: optimizely is not usable or exist
+    // Error handling 1: optimizely is not usable or exist
     if(obj.activeExperiments == null
       || obj.activeExperiments.length == 0) {
 
-      if(!this.attributes.usePrePopulated) {
-        if(this.attributes.useInactive) {
+      if(!this.get('usePrePopulated')) {
+        if(this.get('useInactive')) {
           // Decided to use one of past data of the news site: only debugging purpose
           // TODO: not perfectly tested
           obj.activeExperiments = this.optimizely.allExperiments;
@@ -1508,13 +1508,13 @@ var Processor = Backbone.Model.extend({
       else {
         // Decided to use prepopulated data
         obj = this._prePopulated[this._prePopulatedPtr];
-        this.attributes.isUsingPrePopulated = true;
+        this.set('isUsingPrePopulated', true);
       }
     }
 
     var _activeExperiments = obj.activeExperiments;
 
-    if (this.attributes.forceUseInactive) _activeExperiments = Object.keys(this.optimizely.allExperiments);
+    if (this.get('forceUseInactive')) _activeExperiments = Object.keys(this.optimizely.allExperiments);
 
     var unwrap = function(str, cnt) {
       str = str.substring(1);
@@ -1574,7 +1574,7 @@ var Processor = Backbone.Model.extend({
           headline = headline.substring(i);
           headline = headline.replace('window.runSubscribeTest( true, \'', '');
           i = headline.indexOf(', \'SubscribeGoal\'');
-          headline = headline.substring(0, i);
+          headline = headline.substring(0, i - 1);
 
           if(obj.variationIdsMap[expId].length > 0) {
             var currentHeadlineId = obj.variationIdsMap[expId][0];
@@ -1639,9 +1639,6 @@ var Processor = Backbone.Model.extend({
           headline = unwrap(headline, 1);
         }
 
-        // This is only for New York Times Rule 1 (subscription label test): it ends with \'
-        if(headline.endsWith('\'')) headline = headline.substring(0, headline.length - 1).trim();
-
         variation.headline = headline;
         variation.current = current;
 
@@ -1656,11 +1653,27 @@ var Processor = Backbone.Model.extend({
       this.activeExperiments.push(experiment);
     }
 
+    // Sort variation; current condition goes first
     for(var expIndex in this.activeExperiments) {
       var experiment = this.activeExperiments[expIndex];
       experiment.variations.sort(function(a, b) {
         return (a.current == b.current) ? 0 : (a.current ? -1 : 1);
       });
+    }
+
+    // Error handling 2: optimizely is not usable or exist
+    // This happens when the page has an Optimizely object
+    // with only dummy items with one or less variation; New York Times
+    if(this.activeExperiments.length == 0
+      && this.get('usePrePopulated')) {
+      // Decided to use prepopulated data
+      // So, do this again
+      this.optimizely = {};
+      this.setActiveExperiments();
+    }
+    
+    for(var aeIndex in this.activeExperiments) {
+      var ae = this.activeExperiments[aeIndex];
     }
 
     return this.activeExperiments;
