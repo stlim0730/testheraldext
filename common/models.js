@@ -1525,6 +1525,9 @@ var Processor = Backbone.Model.extend({
     for (var expIndex in _activeExperiments) {
 
       var expId = _activeExperiments[expIndex];
+
+      if(!obj.allExperiments[expId]) continue; // addtion made while building optcollector
+
       var varIds = obj.allExperiments[expId].enabled_variation_ids;
       if(varIds.length < 2) continue;
       var variations = [];
@@ -1650,15 +1653,12 @@ var Processor = Backbone.Model.extend({
         variations: variations
       };
 
-      this.activeExperiments.push(experiment);
-    }
-
-    // Sort variation; current condition goes first
-    for(var expIndex in this.activeExperiments) {
-      var experiment = this.activeExperiments[expIndex];
+      // Sort variation; current condition goes first // addtion made while building optcollector
       experiment.variations.sort(function(a, b) {
         return (a.current == b.current) ? 0 : (a.current ? -1 : 1);
       });
+
+      this.activeExperiments.push(experiment);
     }
 
     // Error handling 2: optimizely is not usable or exist
@@ -1670,10 +1670,6 @@ var Processor = Backbone.Model.extend({
       // So, do this again
       this.optimizely = {};
       this.setActiveExperiments();
-    }
-    
-    for(var aeIndex in this.activeExperiments) {
-      var ae = this.activeExperiments[aeIndex];
     }
 
     return this.activeExperiments;
