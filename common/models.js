@@ -1641,7 +1641,9 @@ var Processor = Backbone.Model.extend({
           ) {
           headline = unwrap(headline, 1);
         }
-        headline = headline.replace('&#39;', '\'');
+        while(headline.includes('&#39;')){
+          headline = headline.replace('&#39;', '\'');
+        }
 
         variation.headline = headline;
         variation.current = current;
