@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "Name-of-the-app",
-  "description": "Desc-of-the-app",
+  "name": "TestHerald",
+  "description": "TestHerald",
   "version": "1.0",
 
   "permissions": [
