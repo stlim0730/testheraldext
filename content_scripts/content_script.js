@@ -87,8 +87,6 @@ var test = 'testtest';
             if(siteConfig.selectorPrefix != '') {
               identifier = identifier.replace(siteConfig.selectorPrefix, '').trim();
             }
-            console.info(code);
-            console.info(identifier);
             var headlineOnPage = null;
             var tagged = false;
             var wrapper = null;
@@ -107,29 +105,6 @@ var test = 'testtest';
               }
               if(tagged) break;
             }
-            // var headline = null;
-            // var index = -1;
-            // for(var _index in siteConfig.headlineSelector) {
-            //   headline = $(siteConfig.headlineSelector[_index] + ':contains(' + currentHeadline + ')')[0];
-            //   if(headline) {
-            //     index = _index; // index of the corresponding wrapper class
-            //     break;
-            //   }
-            //   else {
-            //     // Assumingly, the headline contains non-ascii chars
-            //     var textOnPage = $(siteConfig.headlineSelector[_index]).text();
-            //     // for(var k in textOnPage) {
-            //     //   console.info(_index, textOnPage[k], textOnPage[k] == currentHeadline);
-            //     // }
-            //     console.info(typeof textOnPage);
-            //   }
-            // }
-            // if(headline) {
-            //   console.info(headline);
-            //   $(headline).addClass('headline-being-tested-current');
-            //   var wrapper = $(headline).closest(siteConfig.headlineWrapper[index]);
-            //   $(wrapper).addClass('headline-wrapper-highlight');
-            // }
             if(tagged) {
               // Scroll
               var offset = $(wrapper).offset().top - siteConfig.scrollTopMargin;
