@@ -85,7 +85,7 @@ var test = 'testtest';
             var siteConfig = msg.target.siteConfig;
             var identifier = code.match(new RegExp(siteConfig.selectorExtractRegex))[0];
             if(siteConfig.selectorPrefix != '') {
-              identifier = identifier.replace(siteConfig.selectorPrefix, '').trim();  
+              identifier = identifier.replace(siteConfig.selectorPrefix, '').trim();
             }
             // console.info(identifier);
             var headlineOnPage = null;
