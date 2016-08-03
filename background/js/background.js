@@ -112,11 +112,32 @@ var app = {};
                 var tab = app.tabs[tabId];
                 var tabName = tab.get('name');
 
+                var headline = msg.target.currentHeadline;
+                var activeExperiments = app.tabs[tabId].getActiveExperiments();
+                var code = null;
+                var found = false;
+
+                for(var aeIndex in activeExperiments) {
+                  var ae = activeExperiments[aeIndex];
+                  for(var vaIndex in ae.variations) {
+                    var va = ae.variations[vaIndex];
+                    if(va.headline == headline || found) {
+                      found = true;
+                      if(va.code) code = va.code;
+                    }
+                  }
+
+                  if(code) break;
+                }
+
                 app.ports.content['content' + tabName].postMessage({
                   sender: 'background',
                   receiver: 'content' + tabName,
                   event: 'highlight',
-                  target: msg.target
+                  target: {
+                    siteConfig: msg.target.siteConfig,
+                    code: code
+                  }
                 });
               });
               break;

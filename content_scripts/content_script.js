@@ -76,28 +76,67 @@ var test = 'testtest';
             break;
 
           case 'highlight':
-            var currentHeadline = msg.target.currentHeadline;
-            // TODO: temporary currentHeadline in debugging mode
+            var code = msg.target.code;
+            // NYP
+            // "code": "$(\"h1 > .postid-10288075, h3.postid-10288075, h2.postid-10288075\").text(\"This girl wondered what would happen if she put her cats in a backpack\");",
+            // NYT
+            // "code": "/*_optimizely_evaluate=force */ \nwindow.runComplexABTest( 100000004559755, 'false', 'false', '', '', '100000004530881_1468852972496' );\n/*_optimizely_evaluate=safe */",
+            code = "/*_optimizely_evaluate=force */ \nwindow.runComplexABTest( 100000004559755, 'false', 'false', '', '', '100000004530881_1468852972496' );\n/*_optimizely_evaluate=safe */";
             var siteConfig = msg.target.siteConfig;
-            var headline = null;
-            var index = -1;
-            for(var _index in siteConfig.headlineSelector) {
-              headline = $(siteConfig.headlineSelector[_index] + ':contains(' + currentHeadline + ')')[0];
-              if(headline) {
-                index = _index; // index of the corresponding wrapper class
-                break;
-              }
+            var identifier = code.match(new RegExp(siteConfig.selectorExtractRegex))[0];
+            if(siteConfig.selectorPrefix != '') {
+              identifier = identifier.replace(siteConfig.selectorPrefix, '').trim();  
             }
-            if(headline) {
-              console.info(headline);
-              $(headline).addClass('headline-being-tested-current');
-              var wrapper = $(headline).closest(siteConfig.headlineWrapper[index]);
-              $(wrapper).addClass('headline-wrapper-highlight');
-
-              // Scroll ###GIVES ME ERRORS!!!
+            // console.info(identifier);
+            var headlineOnPage = null;
+            var tagged = false;
+            var wrapper = null;
+            for(var tagIndex in siteConfig.headlineTags) {
+              headlineOnPage = $(siteConfig.headlineTags[tagIndex] + '[' + siteConfig.selectorAttr + '=' + identifier + ']');
+              if(headlineOnPage) {
+                // console.info(headlineOnPage);
+                for(var wrapperIndex in siteConfig.headlineWrapper) {
+                  wrapper = $(headlineOnPage).closest(siteConfig.headlineWrapper[wrapperIndex]);
+                  if(wrapper) {
+                    $(wrapper).addClass('headline-wrapper-highlight');
+                    tagged = true;
+                  }
+                  if(tagged) break;
+                }
+              }
+              if(tagged) break;
+            }
+            // var headline = null;
+            // var index = -1;
+            // for(var _index in siteConfig.headlineSelector) {
+            //   headline = $(siteConfig.headlineSelector[_index] + ':contains(' + currentHeadline + ')')[0];
+            //   if(headline) {
+            //     index = _index; // index of the corresponding wrapper class
+            //     break;
+            //   }
+            //   else {
+            //     // Assumingly, the headline contains non-ascii chars
+            //     var textOnPage = $(siteConfig.headlineSelector[_index]).text();
+            //     // for(var k in textOnPage) {
+            //     //   console.info(_index, textOnPage[k], textOnPage[k] == currentHeadline);
+            //     // }
+            //     console.info(typeof textOnPage);
+            //   }
+            // }
+            // if(headline) {
+            //   console.info(headline);
+            //   $(headline).addClass('headline-being-tested-current');
+            //   var wrapper = $(headline).closest(siteConfig.headlineWrapper[index]);
+            //   $(wrapper).addClass('headline-wrapper-highlight');
+            // }
+            if(tagged) {
+              // Scroll
               var offset = $(wrapper).offset().top - siteConfig.scrollTopMargin;
               var scrollScript = '$("body").animate({scrollTop: ' + offset + '}, 400);';
               injectInlineScript(scrollScript, 'body');
+
+              // Border
+              $(wrapper).css('border', 'solid red 3px');
 
               // Highlight
               var highlightScript = '$(".headline-wrapper-highlight").fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500);';

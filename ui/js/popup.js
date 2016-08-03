@@ -7,16 +7,22 @@ console.log('started:', 'popup');
 var siteConfigs = {
   nypost: {
     name: 'New York Post',
-    headlineSelector: ['h3'],
+    headlineTags: ['h3'],
     headlineWrapper: ['article'],
-    scrollTopMargin: 100
+    scrollTopMargin: 100,
+    selectorAttr: 'class',
+    selectorPrefix: '',
+    selectorExtractRegex: 'postid-[0-9]+'
   },
 
   nytimes: {
     name: 'New York Times',
-    headlineSelector: ['a', 'span'],
-    headlineWrapper: ['article', 'div'],
-    scrollTopMargin: 150
+    headlineTags: ['article'],
+    headlineWrapper: ['article'],
+    scrollTopMargin: 200,
+    selectorAttr: 'data-story-id',
+    selectorPrefix: 'runComplexABTest( ',
+    selectorExtractRegex: 'runComplexABTest\\(\\s*\\d+'
   }
 };
 
