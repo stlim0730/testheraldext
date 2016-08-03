@@ -1,1 +1,1 @@
-# myoptimizely
+# TestHerald Chrome extension
