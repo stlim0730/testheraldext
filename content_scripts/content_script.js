@@ -81,13 +81,14 @@ var test = 'testtest';
             // "code": "$(\"h1 > .postid-10288075, h3.postid-10288075, h2.postid-10288075\").text(\"This girl wondered what would happen if she put her cats in a backpack\");",
             // NYT
             // "code": "/*_optimizely_evaluate=force */ \nwindow.runComplexABTest( 100000004559755, 'false', 'false', '', '', '100000004530881_1468852972496' );\n/*_optimizely_evaluate=safe */",
-            code = "/*_optimizely_evaluate=force */ \nwindow.runComplexABTest( 100000004559755, 'false', 'false', '', '', '100000004530881_1468852972496' );\n/*_optimizely_evaluate=safe */";
+            // code = "/*_optimizely_evaluate=force */ \nwindow.runComplexABTest( 100000004559755, 'false', 'false', '', '', '100000004530881_1468852972496' );\n/*_optimizely_evaluate=safe */";
             var siteConfig = msg.target.siteConfig;
             var identifier = code.match(new RegExp(siteConfig.selectorExtractRegex))[0];
             if(siteConfig.selectorPrefix != '') {
               identifier = identifier.replace(siteConfig.selectorPrefix, '').trim();
             }
-            // console.info(identifier);
+            console.info(code);
+            console.info(identifier);
             var headlineOnPage = null;
             var tagged = false;
             var wrapper = null;
