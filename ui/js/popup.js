@@ -21,7 +21,7 @@ var siteConfigs = {
     headlineWrapper: ['article'],
     scrollTopMargin: 200,
     selectorAttr: 'data-story-id',
-    selectorPrefix: 'runComplexABTest( ',
+    selectorPrefix: 'runComplexABTest(',
     selectorExtractRegex: 'runComplexABTest\\(\\s*\\d+'
   }
 };
