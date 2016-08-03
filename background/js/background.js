@@ -158,31 +158,42 @@ var app = {};
                 console.log('isUsingPrePopulated:', isUsingPrePopulated);
                 console.log('optimizely:', app.tabs[tabId].processor.optimizely);
                 console.log('activeExperiments:', app.tabs[tabId].processor.activeExperiments);
-                // Activate desktop notification
-                var notification_opt = {
-                  type: 'basic',
-                  title: 'This page is experimenting on headlines.',
-                  message: 'Click the extension icon to find out more.',
-                  iconUrl: '../ui/images/icon38.png'
-                };
-                chrome.notifications.create('notification for ' + msg.event, notification_opt, function (notiId) {
-                  console.info('notiId:', notiId);
-                });
-                // Change the icon
-                chrome.pageAction.show(tabId);
-                // Change the tooltip
-                chrome.pageAction.setTitle({
-                  tabId: tabId,
-                  title: 'This page has Optimizely.'
-                });
-                // Inject jQuery for this specific page
-                var tabName = app.tabs[tabId].get('name');
-                app.ports.content['content' + tabName].postMessage({
-                  sender: 'background',
-                  receiver: 'content' + tabName,
-                  event: 'inject jquery',
-                  target: ''
-                });
+                var actExCnt = app.tabs[tabId].processor.activeExperiments.length;
+                if(actExCnt > 0) {
+                  var notiTitle = null;
+                  if(actExCnt == 1) {
+                    notiTitle = 'This website now has 1 headline testing.';
+                  }
+                  else {
+                    notiTitle = 'This website now has ' + actExCnt + ' headline testings.';
+                  }
+                  
+                  // Activate desktop notification
+                  var notification_opt = {
+                    type: 'basic',
+                    title: notiTitle,
+                    message: 'Click the extension icon to find out more.',
+                    iconUrl: '../ui/images/icon38.png'
+                  };
+                  chrome.notifications.create('notification for ' + msg.event, notification_opt, function (notiId) {
+                    console.info('notiId:', notiId);
+                  });
+                  // Change the icon
+                  chrome.pageAction.show(tabId);
+                  // Change the tooltip
+                  chrome.pageAction.setTitle({
+                    tabId: tabId,
+                    title: notiTitle
+                  });
+                  // Inject jQuery for this specific page
+                  var tabName = app.tabs[tabId].get('name');
+                  app.ports.content['content' + tabName].postMessage({
+                    sender: 'background',
+                    receiver: 'content' + tabName,
+                    event: 'inject jquery',
+                    target: ''
+                  });
+                }
                 break;
             }
           }
