@@ -1591,6 +1591,9 @@ var Processor = Backbone.Model.extend({
           // New York Times Rule 2: for headline test
           //
           var exp = obj.allExperiments[expId];
+          if(!exp.name) {
+            continue;
+          }
           var head = exp.name.indexOf(' ');
           var fromExpName = exp.name.substring(head);
           
@@ -1648,6 +1651,8 @@ var Processor = Backbone.Model.extend({
         variation.headline = headline;
         variation.current = current;
 
+        if(variation.headline.trim() == '') continue;
+
         variations.push(variation);
       }
 
@@ -1655,6 +1660,8 @@ var Processor = Backbone.Model.extend({
         id: expId,
         variations: variations
       };
+
+      if(experiment.variations.length < 2) continue;
 
       // Sort variation; current condition goes first // addtion made while building optcollector
       experiment.variations.sort(function(a, b) {
