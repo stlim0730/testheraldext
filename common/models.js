@@ -1598,8 +1598,6 @@ var Processor = Backbone.Model.extend({
           var anchor = document.querySelector('article[data-story-id="' + identifier + '"] .story-heading a');
           var fromPage = anchor.innerHTML;
           
-          url = anchor.getAttribute('href');
-          
           var fromCode = obj.allVariations[varIds[varIndex]].code;
           var head = fromCode.indexOf('window.runComplexABTest(');
           fromCode = fromCode.substring(head).replace('window.runComplexABTest(', '').trim();
