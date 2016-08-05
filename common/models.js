@@ -1591,16 +1591,14 @@ var Processor = Backbone.Model.extend({
           // New York Times Rule 2: for headline test
           //
           var exp = obj.allExperiments[expId];
-          // if(!exp.name) {
-          //   continue;
-          // }
-          // var head = exp.name.indexOf(' ');
-          // var fromExpName = exp.name.substring(head);
           var code = obj.allVariations[varIds[varIndex]].code;
           var identifier = code.match(/runComplexABTest\(\s*\d+/)[0];
           identifier = identifier.replace('runComplexABTest(', '').trim();
 
-          var fromPage = $('article[data-story-id=' + identifier + ']')[0].innerHTML;
+          var anchor = document.querySelector('article[data-story-id="' + identifier + '"] .story-heading a');
+          var fromPage = anchor.innerHTML;
+          
+          url = anchor.getAttribute('href');
           
           var fromCode = obj.allVariations[varIds[varIndex]].code;
           var head = fromCode.indexOf('window.runComplexABTest(');
