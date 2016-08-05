@@ -24,7 +24,7 @@
         "common/models.js",
         "content_scripts/content_script.js"
       ],
-      "run_at": "document_end"
+      "run_at": "document_start"
     }
   ],
 
