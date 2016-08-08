@@ -154,7 +154,7 @@ var test = 'testtest';
                   event: event.data.event,
                   target: {
                     tabId: tab.get('tabId'),
-                    res: event.data.target
+                    orgHeadlines: event.data.target
                   }
                 });
                 break;

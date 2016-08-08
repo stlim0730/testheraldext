@@ -15,22 +15,61 @@
       if (this._url.indexOf && this._url.indexOf('optimizely.com') > -1) {
         if (Object.keys(JSON.parse(this.responseText)).indexOf('error') === -1) {
 
-          // var toArray = function(obj) {
-          //   var array = [];
-          //     // iterate backwards ensuring that length is an UInt32
-          //     for (var index = obj.length > 0; index--;) {
-          //       array[index] = obj[index];
-          //     }
-          //     return array;
-          //   }
-          // };
+          var orgHeadlines = {};
+          var articleList = document.querySelectorAll('article');
+          for(var i = 0; i < articleList.length; i++) {
+            
+            var str = articleList[i].outerHTML;
+            // <article class="story theme-summary" id="topnews-100000004573071" data-story-id="100000004573071" data-rank="0" data-collection-renderstyle="HpSum">
+            //   <h3 class="kicker">Mediator </h3>
+            //   <h2 class="story-heading">
+            //     <a href="http://www.nytimes.com/2016/08/08/business/balance-fairness-and-a-proudly-provocative-presidential-candidate.html">Trump Is Testing the Norms of Objectivity in Journalism</a>
+            //   </h2>
+            //   <p class="byline">By JIM RUTENBERG</p>
+            //   <p class="summary">Mr. Trump is forcing journalists to grapple with whether, or when, to abandon rules of traditional reporting.</p>
+            //   <p class="theme-comments">
+            //     <a href="http://www.nytimes.com/2016/08/08/business/balance-fairness-and-a-proudly-provocative-presidential-candidate.html?hp&amp;target=comments#commentsContainer" class="comments-link">
+            //       <i class="icon sprite-icon comments-icon"></i>
+            //       <span class="comment-count">&nbsp;Comments</span>
+            //     </a>
+            //   </p>
+            // </article>
+            var identifier = str.match(/data-story-id="[0-9]+"/);
+            if(identifier && identifier.length > 0) {
+              identifier = identifier[0].substring(15, identifier[0].length - 1);
+              // console.log(identifier);
+
+              while(str.includes('\n')) {
+                str = str.replace('\n', '');
+              }
+
+              var headingPattern = /<h[0-9]\s+.*class\s*=\s*"story-heading".+<\/h[0-9]>/;
+              var heading = str.match(headingPattern);
+              if(heading && heading.length > 0) {
+                console.log(heading);
+                var anchorPattern = /<a\s+href\s*=\s*".+"\s*.*>.+<\/a>/;
+                var anchorText = heading[0].match(anchorPattern);
+                if(anchorText && anchorText.length > 0) {
+                  anchorText = anchorText[0].match(/<a .+>.+<\/a>/)[0];
+                  anchorText = anchorText.match(/>.+<\/a>/)[0];
+                  anchorText = anchorText.substring(1, anchorText.length - 4);
+                  // console.log(anchorText);
+
+                  orgHeadlines[identifier] = JSON.parse(JSON.stringify(anchorText));
+                }
+              }
+            }
+            else {
+              continue;
+            }
+          }
 
           // Collect all the articles
           window.postMessage({
             sender: 'injection',
             receiver: 'content',
             event: 'caught xhr',
-            target: 'collect all the article headlines'//document.querySelectorAll('article')
+            target: JSON.stringify(orgHeadlines)
 
             // Message event sometimes fails with nested objects for some reason; serialize them.
           }, '*');

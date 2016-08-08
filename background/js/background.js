@@ -159,7 +159,7 @@ var app = {};
                     tabId: tabId
                   });
                   app.tabs[tabId] = tab;
-                  port.name = msg.target;//TODO: deal with disconnect
+                  port.name = msg.target;
                   app.ports.content[msg.sender].postMessage({
                     sender: 'background',
                     receiver: msg.sender,
@@ -170,7 +170,7 @@ var app = {};
                 break;
 
               case 'caught xhr':
-                console.log(msg.event, msg.target);
+                app.tabs[msg.target.tabId].processor.orgHeadlines = JSON.parse(msg.target.orgHeadlines);
                 break;
 
               case 'found optimizely':

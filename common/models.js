@@ -1479,6 +1479,8 @@ var Processor = Backbone.Model.extend({
 
   activeExperiments: [],
 
+  orgHeadlines: null,
+
   constructor: function(attr, opt) {
     this._prePopulatedPtr = Math.floor((Math.random() * this._prePopulated.length));
 
@@ -1594,33 +1596,19 @@ var Processor = Backbone.Model.extend({
           var code = obj.allVariations[varIds[varIndex]].code;
           var identifier = code.match(/runComplexABTest\(\s*\d+/)[0];
           identifier = identifier.replace('runComplexABTest(', '').trim();
-          
-          var anchor = document.querySelector('article[data-story-id="' + identifier + '"] .story-heading a');
-          console.log('identifier', identifier, anchor);
-          var fromPage;
-          if (anchor) fromPage = anchor.innerHTML;
-          else fromPage = 'Original';
-          
-          var fromCode = obj.allVariations[varIds[varIndex]].code;
-          var head = fromCode.indexOf('window.runComplexABTest(');
-          fromCode = fromCode.substring(head).replace('window.runComplexABTest(', '').trim();
-          if (fromCode.includes('/*_optimizely_evaluate')) {
-            var cmtIndex = fromCode.indexOf('/*_optimizely_evaluate');
-            fromCode = fromCode.substring(0, cmtIndex).trim();
-          }
-          if (fromCode.endsWith(';')) {
-            fromCode = fromCode.substring(0, fromCode.length - 1).trim();
-          }
-          if (fromCode.endsWith(')')) {
-            fromCode = fromCode.substring(0, fromCode.length - 1).trim();
-          }
 
-          fromCode = fromCode.split(',');
-          fromCode.splice(0, 3);
-          fromCode.splice(fromCode.length - 2, 2);
-          fromCode = fromCode.join().trim();
+          var fromPage = this.orgHeadlines[identifier];
+          // console.log(fromPage);
+          
+          // "/*_optimizely_evaluate=force */ ↵window.runComplexABTest( 100000004574587, 'false', 'false', '', '', '100000004574587_1470682459118' );↵/*_optimizely_evaluate=safe */"
+          // "/*_optimizely_evaluate=force */ ↵window.runComplexABTest( 100000004574587, 'true', 'false', 'Suicide Bomber Strikes at Lawyers&#39; Protest in Pakistan', '', '100000004574587_1470682459118' );↵/*_optimizely_evaluate=safe */"
+          code = code.replace('\n', '').match(/\(\s*[0-9]+,\s*.+\)/)[0].split(',');
+          fromCode = code.slice(3, code.length - 2).join(', ').trim();
 
-          if(fromCode != null && (fromCode == '' || fromCode == '\'\'' || fromCode == fromPage)) {
+          console.log(fromPage, fromCode);
+
+          if(!fromCode || fromCode.trim() == '\'\'') {
+            // Original headline; the code doesn't have the data
             headline = fromPage;
           }
           else {
@@ -1643,14 +1631,14 @@ var Processor = Backbone.Model.extend({
           (headline.startsWith('(') && headline.endsWith(')'))
           || (headline.startsWith('"') && headline.endsWith('"'))
           || (headline.startsWith('\'') && headline.endsWith('\''))
-          || (headline.startsWith('&quot;') && headline.endsWith('&quot;'))
-          || (headline.startsWith('&#39;') && headline.endsWith('&#39;'))
+          // || (headline.startsWith('&quot;') && headline.endsWith('&quot;'))
+          // || (headline.startsWith('&#39;') && headline.endsWith('&#39;'))
           ) {
           headline = unwrap(headline, 1);
         }
-        while(headline.includes('&#39;')){
-          headline = headline.replace('&#39;', '\'');
-        }
+        // while(headline.includes('&#39;')){
+        //   headline = headline.replace('&#39;', '\'');
+        // }
 
         variation.headline = headline;
         variation.current = current;
