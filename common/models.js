@@ -1594,9 +1594,12 @@ var Processor = Backbone.Model.extend({
           var code = obj.allVariations[varIds[varIndex]].code;
           var identifier = code.match(/runComplexABTest\(\s*\d+/)[0];
           identifier = identifier.replace('runComplexABTest(', '').trim();
-
+          
           var anchor = document.querySelector('article[data-story-id="' + identifier + '"] .story-heading a');
-          var fromPage = anchor.innerHTML;
+          console.log('identifier', identifier, anchor);
+          var fromPage;
+          if (anchor) fromPage = anchor.innerHTML;
+          else fromPage = 'Original';
           
           var fromCode = obj.allVariations[varIds[varIndex]].code;
           var head = fromCode.indexOf('window.runComplexABTest(');

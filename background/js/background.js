@@ -169,6 +169,10 @@ var app = {};
                 });
                 break;
 
+              case 'caught xhr':
+                console.log(msg.event, msg.target);
+                break;
+
               case 'found optimizely':
                 var tabId = msg.target.tabId;
                 // Process optimizely data
