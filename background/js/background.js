@@ -254,6 +254,7 @@ var app = {};
 
         delete app.ports[portName];
         delete app.tabs[tabId];
+        delete app.persistData[tabId];
       }
       else {
         console.log('I don\'t know what has been disconnected.');
