@@ -46,7 +46,7 @@
               var headingPattern = /<h[0-9]\s+.*class\s*=\s*"story-heading".+<\/h[0-9]>/;
               var heading = str.match(headingPattern);
               if(heading && heading.length > 0) {
-                console.log(heading);
+                // console.log(heading);
                 var anchorPattern = /<a\s+href\s*=\s*".+"\s*.*>.+<\/a>/;
                 var anchorText = heading[0].match(anchorPattern);
                 if(anchorText && anchorText.length > 0) {

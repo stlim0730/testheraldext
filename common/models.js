@@ -1479,7 +1479,7 @@ var Processor = Backbone.Model.extend({
 
   activeExperiments: [],
 
-  orgHeadlines: null,
+  // orgHeadlines: null,
 
   constructor: function(attr, opt) {
     this._prePopulatedPtr = Math.floor((Math.random() * this._prePopulated.length));
@@ -1487,7 +1487,7 @@ var Processor = Backbone.Model.extend({
     Backbone.Model.apply(this, arguments);
   },
 
-  setActiveExperiments: function() {
+  setActiveExperiments: function(tabId) {
     this.activeExperiments = [];
 
     var obj = this.optimizely;
@@ -1597,8 +1597,8 @@ var Processor = Backbone.Model.extend({
           var identifier = code.match(/runComplexABTest\(\s*\d+/)[0];
           identifier = identifier.replace('runComplexABTest(', '').trim();
 
-          var fromPage = this.orgHeadlines[identifier];
-          // console.log(fromPage);
+          var fromPage = app.persistData[tabId][identifier];
+          console.log(fromPage);
           
           // "/*_optimizely_evaluate=force */ ↵window.runComplexABTest( 100000004574587, 'false', 'false', '', '', '100000004574587_1470682459118' );↵/*_optimizely_evaluate=safe */"
           // "/*_optimizely_evaluate=force */ ↵window.runComplexABTest( 100000004574587, 'true', 'false', 'Suicide Bomber Strikes at Lawyers&#39; Protest in Pakistan', '', '100000004574587_1470682459118' );↵/*_optimizely_evaluate=safe */"

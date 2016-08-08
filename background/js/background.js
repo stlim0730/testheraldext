@@ -8,6 +8,7 @@ var app = {};
   //
 
   app.tabs = {};
+  app.persistData = {};
   app.ports = {};
   app.ports.content = {};
   // app.ports.injection = {};
@@ -170,7 +171,16 @@ var app = {};
                 break;
 
               case 'caught xhr':
-                app.tabs[msg.target.tabId].processor.orgHeadlines = JSON.parse(msg.target.orgHeadlines);
+                var orgHeadlines = JSON.parse(msg.target.orgHeadlines);
+                if(!app.persistData[msg.target.tabId]) {
+                  app.persistData[msg.target.tabId] = {};
+                }
+                for(var artIdentifier in orgHeadlines) {
+                  if(!app.persistData[msg.target.tabId][artIdentifier]) {
+                    app.persistData[msg.target.tabId][artIdentifier] = orgHeadlines[artIdentifier];
+                  }
+                }
+                // app.tabs[msg.target.tabId].processor.orgHeadlines = JSON.parse(msg.target.orgHeadlines);
                 break;
 
               case 'found optimizely':
@@ -178,7 +188,7 @@ var app = {};
                 // Process optimizely data
                 app.tabs[tabId].processor.set('isFound', true);
                 app.tabs[tabId].processor.optimizely = msg.target.optimizely;
-                app.tabs[tabId].processor.setActiveExperiments();
+                app.tabs[tabId].processor.setActiveExperiments(tabId);
                 var isUsingPrePopulated = app.tabs[tabId].processor.get('isUsingPrePopulated');
                 console.log('isUsingPrePopulated:', isUsingPrePopulated);
                 console.log('optimizely:', app.tabs[tabId].processor.optimizely);
