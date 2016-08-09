@@ -43,7 +43,7 @@
                 str = str.replace('\n', '');
               }
 
-              var headingPattern = /<h[0-9]\s+.*class\s*=\s*"story-heading".+<\/h[0-9]>/;
+              var headingPattern = /<h[0-9]\s+class\s*=\s*"story-heading".+<\/h[0-9]>/;
               var heading = str.match(headingPattern);
               if(heading && heading.length > 0) {
                 // console.log(heading);
@@ -51,11 +51,11 @@
                 var anchorText = heading[0].match(anchorPattern);
                 if(anchorText && anchorText.length > 0) {
                   // Parse HTML; due to potential image link within the anchor link
-                  parser = new DOMParser();
-                  anchorText = parser.parseFromString(anchorText, 'text/xml');
+                  var parser = new DOMParser();
+                  anchorText = parser.parseFromString(anchorText[0], 'text/xml').documentElement.innerHTML;
                   // console.log(anchorText);
 
-                  orgHeadlines[identifier] = anchorText.innerHTML;
+                  orgHeadlines[identifier] = anchorText;
                 }
               }
             }

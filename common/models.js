@@ -1603,7 +1603,7 @@ var Processor = Backbone.Model.extend({
           // "/*_optimizely_evaluate=force */ ↵window.runComplexABTest( 100000004574587, 'false', 'false', '', '', '100000004574587_1470682459118' );↵/*_optimizely_evaluate=safe */"
           // "/*_optimizely_evaluate=force */ ↵window.runComplexABTest( 100000004574587, 'true', 'false', 'Suicide Bomber Strikes at Lawyers&#39; Protest in Pakistan', '', '100000004574587_1470682459118' );↵/*_optimizely_evaluate=safe */"
           code = code.replace('\n', '').match(/\(\s*[0-9]+,\s*.+\)/)[0].split(',');
-          fromCode = code.slice(3, code.length - 2).join(', ').trim();
+          var fromCode = code.slice(3, code.length - 2).join(', ').trim();
 
           console.log(fromPage, fromCode);
 
