@@ -4,13 +4,13 @@
   var open = XHR.open;
   var send = XHR.send;
 
-  XHR.open = function (method, url) {
+  XHR.open = function(method, url) {
     this._method = method;
     this._url = url;
     return open.apply(this, arguments);
   };
 
-  XHR.send = function (postData) {
+  XHR.send = function(postData) {
     this.addEventListener('load', function () {
       if (this._url.indexOf && this._url.indexOf('optimizely.com') > -1) {
         if (Object.keys(JSON.parse(this.responseText)).indexOf('error') === -1) {
@@ -50,12 +50,12 @@
                 var anchorPattern = /<a\s+href\s*=\s*".+"\s*.*>.+<\/a>/;
                 var anchorText = heading[0].match(anchorPattern);
                 if(anchorText && anchorText.length > 0) {
-                  anchorText = anchorText[0].match(/<a .+>.+<\/a>/)[0];
-                  anchorText = anchorText.match(/>.+<\/a>/)[0];
-                  anchorText = anchorText.substring(1, anchorText.length - 4);
+                  // Parse HTML; due to potential image link within the anchor link
+                  parser = new DOMParser();
+                  anchorText = parser.parseFromString(anchorText, 'text/xml');
                   // console.log(anchorText);
 
-                  orgHeadlines[identifier] = JSON.parse(JSON.stringify(anchorText));
+                  orgHeadlines[identifier] = anchorText.innerHTML;
                 }
               }
             }
