@@ -8,6 +8,7 @@ var app = {};
   //
 
   app.tabs = {};
+  app.persistData = {};
   app.ports = {};
   app.ports.content = {};
   // app.ports.injection = {};
@@ -159,7 +160,7 @@ var app = {};
                     tabId: tabId
                   });
                   app.tabs[tabId] = tab;
-                  port.name = msg.target;//TODO: deal with disconnect
+                  port.name = msg.target;
                   app.ports.content[msg.sender].postMessage({
                     sender: 'background',
                     receiver: msg.sender,
@@ -169,12 +170,25 @@ var app = {};
                 });
                 break;
 
+              case 'caught xhr':
+                var orgHeadlines = JSON.parse(msg.target.orgHeadlines);
+                if(!app.persistData[msg.target.tabId]) {
+                  app.persistData[msg.target.tabId] = {};
+                }
+                for(var artIdentifier in orgHeadlines) {
+                  if(!app.persistData[msg.target.tabId][artIdentifier]) {
+                    app.persistData[msg.target.tabId][artIdentifier] = orgHeadlines[artIdentifier];
+                  }
+                }
+                // app.tabs[msg.target.tabId].processor.orgHeadlines = JSON.parse(msg.target.orgHeadlines);
+                break;
+
               case 'found optimizely':
                 var tabId = msg.target.tabId;
                 // Process optimizely data
                 app.tabs[tabId].processor.set('isFound', true);
                 app.tabs[tabId].processor.optimizely = msg.target.optimizely;
-                app.tabs[tabId].processor.setActiveExperiments();
+                app.tabs[tabId].processor.setActiveExperiments(tabId);
                 var isUsingPrePopulated = app.tabs[tabId].processor.get('isUsingPrePopulated');
                 console.log('isUsingPrePopulated:', isUsingPrePopulated);
                 console.log('optimizely:', app.tabs[tabId].processor.optimizely);
@@ -240,6 +254,7 @@ var app = {};
 
         delete app.ports[portName];
         delete app.tabs[tabId];
+        delete app.persistData[tabId];
       }
       else {
         console.log('I don\'t know what has been disconnected.');

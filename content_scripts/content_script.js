@@ -136,21 +136,54 @@ var test = 'testtest';
       return true;
 
     // Bypass the message received
-    if (event.data.sender === 'injection'
-      && event.data.receiver === 'content') {
-      var optimizely = JSON.parse(event.data.target);
-      console.info('injection script found optimizely:', optimizely);
+    switch(event.data.sender) {
 
-      port.postMessage({
-        sender: 'content' + tabName,
-        receiver: 'background',
-        event: event.data.event,
-        target: {
-          tabId: tab.get('tabId'),
-          optimizely: optimizely
+      case 'injection':
+
+        switch(event.data.receiver) {
+
+          case 'content':
+
+            switch(event.data.event) {
+
+              case 'caught xhr':
+
+                port.postMessage({
+                  sender: 'content' + tabName,
+                  receiver: 'background',
+                  event: event.data.event,
+                  target: {
+                    tabId: tab.get('tabId'),
+                    orgHeadlines: event.data.target
+                  }
+                });
+                break;
+
+              case 'found optimizely':
+
+                var optimizely = JSON.parse(event.data.target);
+                console.info('injection script found optimizely:', optimizely);
+
+                port.postMessage({
+                  sender: 'content' + tabName,
+                  receiver: 'background',
+                  event: event.data.event,
+                  target: {
+                    tabId: tab.get('tabId'),
+                    optimizely: optimizely
+                  }
+                });
+                break;
+
+            }
+
+            break;
+
         }
-      });
+
+        break;
     }
+
   }, false);
 
 })();
