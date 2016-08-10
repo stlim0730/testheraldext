@@ -15,11 +15,11 @@
       if (this._url.indexOf && this._url.indexOf('optimizely.com') > -1) {
         if (Object.keys(JSON.parse(this.responseText)).indexOf('error') === -1) {
 
-          var orgHeadlines = {};
+          var orgArticles = {};
           var articleList = document.querySelectorAll('article');
           for(var i = 0; i < articleList.length; i++) {
             
-            var str = articleList[i].outerHTML;
+            var article = articleList[i].outerHTML;
             // <article class="story theme-summary" id="topnews-100000004573071" data-story-id="100000004573071" data-rank="0" data-collection-renderstyle="HpSum">
             //   <h3 class="kicker">Mediator </h3>
             //   <h2 class="story-heading">
@@ -34,30 +34,14 @@
             //     </a>
             //   </p>
             // </article>
-            var identifier = str.match(/data-story-id="[0-9]+"/);
+            var identifier = article.match(/data-story-id="[0-9]+"/);
             if(identifier && identifier.length > 0) {
               identifier = identifier[0].substring(15, identifier[0].length - 1);
               // console.log(identifier);
-
-              while(str.includes('\n')) {
-                str = str.replace('\n', '');
+              while(article.includes('\n')) {
+                article = article.replace('\n', '');
               }
-
-              var headingPattern = /<h[0-9]\s+class\s*=\s*"story-heading".+<\/h[0-9]>/;
-              var heading = str.match(headingPattern);
-              if(heading && heading.length > 0) {
-                // console.log(heading);
-                var anchorPattern = /<a\s+href\s*=\s*".+"\s*.*>.+<\/a>/;
-                var anchorText = heading[0].match(anchorPattern);
-                if(anchorText && anchorText.length > 0) {
-                  // Parse HTML; due to potential image link within the anchor link
-                  var parser = new DOMParser();
-                  anchorText = parser.parseFromString(anchorText[0], 'text/xml').documentElement.innerHTML;
-                  // console.log(anchorText);
-
-                  orgHeadlines[identifier] = anchorText;
-                }
-              }
+              orgArticles[identifier] = article;
             }
             else {
               continue;
@@ -69,7 +53,7 @@
             sender: 'injection',
             receiver: 'content',
             event: 'caught xhr',
-            target: JSON.stringify(orgHeadlines)
+            target: JSON.stringify(orgArticles)
 
             // Message event sometimes fails with nested objects for some reason; serialize them.
           }, '*');
