@@ -53,7 +53,6 @@
                   // Parse HTML; due to potential image link within the anchor link
                   var parser = new DOMParser();
                   anchorText = parser.parseFromString(anchorText[0], 'text/xml').documentElement.innerHTML;
-                  anchorText.replace('<span class=\"icon audio\"><\/span>', '');
                   // console.log(anchorText);
 
                   orgHeadlines[identifier] = anchorText;
