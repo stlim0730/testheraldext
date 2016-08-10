@@ -28,20 +28,6 @@ var test = 'testtest';
   //
   // Start
   //
-
-
-
-  // // Print jQuery version
-  // if (typeof jQuery != "undefined") {  
-  //   // jQuery is loaded => print the version
-  //   console.info("jQuery found:", jQuery.fn.jquery);
-  // }
-  // else {
-  //   console.info("no jQuery");
-  // }
-
-
-  
   var port = chrome.extension.connect();
   port.postMessage({
     sender: 'content' + tabName,
@@ -154,7 +140,7 @@ var test = 'testtest';
                   event: event.data.event,
                   target: {
                     tabId: tab.get('tabId'),
-                    orgHeadlines: event.data.target
+                    orgArticles: event.data.target
                   }
                 });
                 break;

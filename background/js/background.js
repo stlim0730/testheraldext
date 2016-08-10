@@ -171,16 +171,18 @@ var app = {};
                 break;
 
               case 'caught xhr':
-                var orgHeadlines = JSON.parse(msg.target.orgHeadlines);
+                var orgArticles = JSON.parse(msg.target.orgArticles);
                 if(!app.persistData[msg.target.tabId]) {
                   app.persistData[msg.target.tabId] = {};
                 }
-                for(var artIdentifier in orgHeadlines) {
+                for(var artIdentifier in orgArticles) {
                   if(!app.persistData[msg.target.tabId][artIdentifier]) {
-                    app.persistData[msg.target.tabId][artIdentifier] = orgHeadlines[artIdentifier];
+                    var article = orgArticles[artIdentifier];
+                    var anchorText = $(article).find('.story-heading a').text();
+                    console.log(anchorText);
+                    app.persistData[msg.target.tabId][artIdentifier] = anchorText;
                   }
                 }
-                // app.tabs[msg.target.tabId].processor.orgHeadlines = JSON.parse(msg.target.orgHeadlines);
                 break;
 
               case 'found optimizely':
