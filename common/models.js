@@ -1598,13 +1598,19 @@ var Processor = Backbone.Model.extend({
           identifier = identifier.replace('runComplexABTest(', '').trim();
 
           var fromPage = app.persistData[tabId][identifier];
-          console.log(fromPage);
           
           // "/*_optimizely_evaluate=force */ ↵window.runComplexABTest( 100000004574587, 'false', 'false', '', '', '100000004574587_1470682459118' );↵/*_optimizely_evaluate=safe */"
           // "/*_optimizely_evaluate=force */ ↵window.runComplexABTest( 100000004574587, 'true', 'false', 'Suicide Bomber Strikes at Lawyers&#39; Protest in Pakistan', '', '100000004574587_1470682459118' );↵/*_optimizely_evaluate=safe */"
           code = code.replace('\n', '').match(/\(\s*[0-9]+,\s*.+\)/)[0].split(',');
-          var fromCode = code.slice(3, code.length - 2).join(', ').trim();
-
+          console.log(code);
+          code.shift();
+          code.shift();
+          code.shift();
+          code.pop();
+          console.log(code);
+          var emptyIndex = code.indexOf(' \'\'');
+          if(emptyIndex >= 0) code.splice(emptyIndex, 1);
+          var fromCode = code.join(', ');
           console.log(fromPage, fromCode);
 
           if(!fromCode || fromCode.trim() == '\'\'') {

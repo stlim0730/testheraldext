@@ -20,6 +20,9 @@
           for(var i = 0; i < articleList.length; i++) {
             
             var article = articleList[i].outerHTML;
+            while(article.includes('\n')) {
+              article = article.replace('\n', '');
+            }
             // <article class="story theme-summary" id="topnews-100000004573071" data-story-id="100000004573071" data-rank="0" data-collection-renderstyle="HpSum">
             //   <h3 class="kicker">Mediator </h3>
             //   <h2 class="story-heading">
@@ -38,9 +41,7 @@
             if(identifier && identifier.length > 0) {
               identifier = identifier[0].substring(15, identifier[0].length - 1);
               // console.log(identifier);
-              while(article.includes('\n')) {
-                article = article.replace('\n', '');
-              }
+              
               orgArticles[identifier] = article;
             }
             else {
