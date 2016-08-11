@@ -160,6 +160,7 @@ var app = {};
                     tabId: tabId
                   });
                   app.tabs[tabId] = tab;
+                  console.log(app.tabs[tabId].processor);
                   port.name = msg.target;
                   app.ports.content[msg.sender].postMessage({
                     sender: 'background',
@@ -190,7 +191,7 @@ var app = {};
                 // Process optimizely data
                 app.tabs[tabId].processor.set('isFound', true);
                 app.tabs[tabId].processor.optimizely = msg.target.optimizely;
-                app.tabs[tabId].processor.setActiveExperiments(tabId);
+                app.tabs[tabId].processor.setActiveExperiments(app.persistData[tabId]);
                 var isUsingPrePopulated = app.tabs[tabId].processor.get('isUsingPrePopulated');
                 console.log('isUsingPrePopulated:', isUsingPrePopulated);
                 console.log('optimizely:', app.tabs[tabId].processor.optimizely);

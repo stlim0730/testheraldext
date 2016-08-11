@@ -1487,7 +1487,7 @@ var Processor = Backbone.Model.extend({
     Backbone.Model.apply(this, arguments);
   },
 
-  setActiveExperiments: function(tabId) {
+  setActiveExperiments: function(persistData) {
     this.activeExperiments = [];
 
     var obj = this.optimizely;
@@ -1543,6 +1543,8 @@ var Processor = Backbone.Model.extend({
         variation.current = current; // by default
 
         var headline = variation.code || '';
+        var fromCode = ' ';
+        var fromPage = '  ';
 
         if(headline.includes('.text(') ||
           (headline == '' && variation.name == 'Original')) {
@@ -1597,28 +1599,30 @@ var Processor = Backbone.Model.extend({
           var identifier = code.match(/runComplexABTest\(\s*\d+/)[0];
           identifier = identifier.replace('runComplexABTest(', '').trim();
 
-          var fromPage = app.persistData[tabId][identifier];
+          fromPage = persistData[identifier];
           
           // "/*_optimizely_evaluate=force */ ↵window.runComplexABTest( 100000004574587, 'false', 'false', '', '', '100000004574587_1470682459118' );↵/*_optimizely_evaluate=safe */"
           // "/*_optimizely_evaluate=force */ ↵window.runComplexABTest( 100000004574587, 'true', 'false', 'Suicide Bomber Strikes at Lawyers&#39; Protest in Pakistan', '', '100000004574587_1470682459118' );↵/*_optimizely_evaluate=safe */"
           code = code.replace('\n', '').match(/\(\s*[0-9]+,\s*.+\)/)[0].split(',');
-          console.log(code);
+          // console.log(code);
           code.shift();
           code.shift();
           code.shift();
           code.pop();
-          console.log(code);
+          // console.log(code);
           var emptyIndex = code.indexOf(' \'\'');
           if(emptyIndex >= 0) code.splice(emptyIndex, 1);
-          var fromCode = code.join(', ');
+          fromCode = code.join(',');
           console.log(fromPage, fromCode);
 
           if(!fromCode || fromCode.trim() == '\'\'') {
             // Original headline; the code doesn't have the data
             headline = fromPage;
+            fromPage = headline;
           }
           else {
             headline = fromCode;
+            fromCode = headline;
           }
 
           if(obj.variationIdsMap[expId].length > 0) {
@@ -1645,6 +1649,8 @@ var Processor = Backbone.Model.extend({
         // while(headline.includes('&#39;')){
         //   headline = headline.replace('&#39;', '\'');
         // }
+
+        if(fromCode == fromPage) continue;
 
         variation.headline = headline;
         variation.current = current;
@@ -1737,8 +1743,10 @@ var Tab = Backbone.Model.extend({
   defaults: {
     tabId: null,
     name: null,
-    isOpen: true
+    isOpen: false
   },
+
+  processor: null,
 
   constructor: function(attr, opt) {
     this.processor = new Processor(attr);
@@ -1747,11 +1755,12 @@ var Tab = Backbone.Model.extend({
   },
 
   initialize: function(attr, opt) {
+    this.set('isOpen', true)
     console.log('initialized', 'Tab', this);
 
-    this.on('change:isOpen', function() {
-      console.log('change', 'isOpen', this);
-    });
+    // this.on('change:isOpen', function() {
+    //   console.log('change', 'isOpen', this);
+    // });
   },
 
   getOptimizely: function() {
