@@ -1,5 +1,5 @@
 (function() {
-  console.log('started:', 'sandbox');
+  // console.log('started:', 'sandbox');
 
   //
   // Globals
@@ -22,7 +22,7 @@
   });
 
   port.onMessage.addListener(function (msg) {
-    console.log('received a message:', msg);
+    // console.log('received a message:', msg);
 
     switch(msg.sender) {
       case 'background':

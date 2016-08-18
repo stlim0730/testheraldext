@@ -1,5 +1,5 @@
 (function() {
-  console.log('started:', 'background');
+  // console.log('started:', 'background');
 
   //
   // Globals
@@ -14,10 +14,10 @@
   // Start
   //
   chrome.runtime.onConnect.addListener(function(port) {
-    console.log('connected:', port);
+    // console.log('connected:', port);
 
     port.onMessage.addListener(function(msg) {
-      console.log('received a message:', msg);
+      // console.log('received a message:', msg);
 
       if(msg.sender && msg.sender.startsWith('content')) {
         app.ports.content[msg.sender] = port;
@@ -145,7 +145,7 @@
                     name: msg.target,
                     tabId: tabId
                   });
-                  console.log(app.tabs[tabId].processor);
+                  // console.log(app.tabs[tabId].processor);
                   port.name = msg.target;
                   app.ports.content[msg.sender].postMessage({
                     sender: 'background',
@@ -157,7 +157,7 @@
                 break;
 
               case 'caught xhr':
-                console.log(app.tabs[msg.target.tabId]);
+                // console.log(app.tabs[msg.target.tabId]);
                 var orgArticles = JSON.parse(msg.target.orgArticles);
                 if(!app.persistData[msg.target.tabId]) {
                   app.persistData[msg.target.tabId] = {};
@@ -166,7 +166,7 @@
                   if(!app.persistData[msg.target.tabId][artIdentifier]) {
                     var article = orgArticles[artIdentifier];
                     var anchorText = $(article).find('.story-heading a').text();
-                    console.log(anchorText);
+                    // console.log(anchorText);
                     app.persistData[msg.target.tabId][artIdentifier] = anchorText;
                   }
                 }
@@ -179,9 +179,9 @@
                 app.tabs[tabId].processor.optimizely = msg.target.optimizely;
                 app.tabs[tabId].processor.setActiveExperiments(app.persistData[tabId]);
                 var isUsingPrePopulated = app.tabs[tabId].processor.get('isUsingPrePopulated');
-                console.log('isUsingPrePopulated:', isUsingPrePopulated);
-                console.log('optimizely:', app.tabs[tabId].processor.optimizely);
-                console.log('activeExperiments:', app.tabs[tabId].processor.activeExperiments);
+                // console.log('isUsingPrePopulated:', isUsingPrePopulated);
+                // console.log('optimizely:', app.tabs[tabId].processor.optimizely);
+                // console.log('activeExperiments:', app.tabs[tabId].processor.activeExperiments);
                 var actExCnt = app.tabs[tabId].processor.activeExperiments.length;
                 if(actExCnt > 0) {
                   var notiTitle = null;
@@ -200,7 +200,7 @@
                     iconUrl: '../ui/images/icon38.png'
                   };
                   chrome.notifications.create('notification for ' + msg.event, notification_opt, function (notiId) {
-                    console.info('notiId:', notiId);
+                    // console.info('notiId:', notiId);
                   });
                   // Change the icon
                   chrome.pageAction.show(tabId);
@@ -246,10 +246,10 @@
         delete app.persistData[tabId];
       }
       else {
-        console.log('I don\'t know what has been disconnected.');
+        // console.log('I don\'t know what has been disconnected.');
       }
 
-      console.log('disconnected:', disconnector, port);
+      // console.log('disconnected:', disconnector, port);
     });
 
 

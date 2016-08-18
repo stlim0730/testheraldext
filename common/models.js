@@ -1566,7 +1566,7 @@ var Processor = Backbone.Model.extend({
 
           // Detect current condition
           var currentArr = obj.variationIdsMap[expId];
-          console.log(currentArr);
+          // console.log(currentArr);
           if (Array.isArray(currentArr)
             && currentArr.length >= 1
             && currentArr.includes(varId)) {
@@ -1616,7 +1616,7 @@ var Processor = Backbone.Model.extend({
           var emptyIndex = code.indexOf(' \'\'');
           if(emptyIndex >= 0) code.splice(emptyIndex, 1);
           fromCode = code.join(',');
-          console.log(fromPage, fromCode);
+          // console.log(fromPage, fromCode);
 
           if(!fromCode || fromCode.trim() == '\'\'') {
             // Original headline; the code doesn't have the data
@@ -1759,7 +1759,7 @@ var Tab = Backbone.Model.extend({
 
   initialize: function(attr, opt) {
     this.set('isOpen', true)
-    console.log('initialized', 'Tab', this);
+    // console.log('initialized', 'Tab', this);
 
     // this.on('change:isOpen', function() {
     //   console.log('change', 'isOpen', this);

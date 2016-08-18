@@ -1,5 +1,5 @@
 (function() {
-  console.log('started:', 'content');
+  // console.log('started:', 'content');
   
   //
   // Globals
@@ -34,7 +34,7 @@
   });
 
   port.onMessage.addListener(function (msg) {
-    console.log('received a message:', msg);
+    // console.log('received a message:', msg);
 
     switch(msg.sender) {
 
@@ -145,7 +145,7 @@
               case 'found optimizely':
 
                 var optimizely = JSON.parse(event.data.target);
-                console.info('injection script found optimizely:', optimizely);
+                // console.info('injection script found optimizely:', optimizely);
 
                 port.postMessage({
                   sender: 'content' + tabName,

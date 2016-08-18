@@ -1,5 +1,5 @@
 (function () {
-  console.log('Trying to find XHR to optimizely');
+  // console.log('Trying to find XHR to optimizely');
   var XHR = XMLHttpRequest.prototype;
   var open = XHR.open;
   var send = XHR.send;
@@ -76,7 +76,7 @@ var detect = function() {
     }, '*');
   }
   else {
-    console.info('There is no optimizely.');
+    // console.info('There is no optimizely.');
   }
 };
 

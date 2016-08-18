@@ -1,4 +1,4 @@
-console.log('started:', 'popup');
+// console.log('started:', 'popup');
 
 //
 // Globals
@@ -41,7 +41,7 @@ port.postMessage({
 
 
 port.onMessage.addListener(function (msg) {
-  console.log('received a message:', msg);
+  // console.log('received a message:', msg);
 
   switch(msg.sender) {
 
@@ -125,6 +125,6 @@ $('a.share-on-twitter').click(function (e) {
     type: 'panel',
     focused: true
   }, function (newWindow) {
-    console.info('tweet popup window ID:', newWindow);
+    // console.info('tweet popup window ID:', newWindow);
   });
 });
