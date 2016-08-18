@@ -76,10 +76,10 @@ port.onMessage.addListener(function (msg) {
             $('div.found').show();
 
             if(count < 2) { // Singular
-              count += ' experiment';
+              count += ' story';
             }
             else { // Plural
-              count += ' experiments';
+              count += ' stories';
             }
             $('.news-org').text(newsorg);
             $('.experiment-count').text(count);

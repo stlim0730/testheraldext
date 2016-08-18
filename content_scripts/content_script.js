@@ -1,13 +1,10 @@
-var tab = null;
-var test = 'testtest';
-
 (function() {
   console.log('started:', 'content');
-
+  
   //
   // Globals
   //
-
+  var tab = null;
   var tabName = btoa(new Date());
 
   var injectScriptFile = function (file) {

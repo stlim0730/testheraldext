@@ -1,22 +1,18 @@
-var app = {};
-
 (function() {
   console.log('started:', 'background');
 
   //
   // Globals
   //
-
+  var app = {};
   app.tabs = {};
   app.persistData = {};
   app.ports = {};
   app.ports.content = {};
-  // app.ports.injection = {};
 
   //
   // Start
   //
-
   chrome.runtime.onConnect.addListener(function(port) {
     console.log('connected:', port);
 
@@ -66,17 +62,7 @@ var app = {};
           }
           break;
         
-        // case 'injection':
-          
-        //   switch(msg.event) {
-
-        //     case 'init':
-        //       //
-        //       break;
-        //   }
-
-        //   break;
-
+        
         case 'popup':
           
           switch(msg.event) {
@@ -155,11 +141,10 @@ var app = {};
                 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
                   if(tabs.length == 0) return; // It happens when 'Inspect Popup'
                   var tabId = tabs[0].id;
-                  var tab = new Tab({
+                  app.tabs[tabId] = new Tab({
                     name: msg.target,
                     tabId: tabId
                   });
-                  app.tabs[tabId] = tab;
                   console.log(app.tabs[tabId].processor);
                   port.name = msg.target;
                   app.ports.content[msg.sender].postMessage({
@@ -172,6 +157,7 @@ var app = {};
                 break;
 
               case 'caught xhr':
+                console.log(app.tabs[msg.target.tabId]);
                 var orgArticles = JSON.parse(msg.target.orgArticles);
                 if(!app.persistData[msg.target.tabId]) {
                   app.persistData[msg.target.tabId] = {};

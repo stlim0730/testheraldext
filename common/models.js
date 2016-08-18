@@ -1599,7 +1599,10 @@ var Processor = Backbone.Model.extend({
           var identifier = code.match(/runComplexABTest\(\s*\d+/)[0];
           identifier = identifier.replace('runComplexABTest(', '').trim();
 
-          fromPage = persistData[identifier];
+          if(!this.get('usePrePopulated'))
+            fromPage = persistData[identifier];
+          else
+            fromPage = variation.name;
           
           // "/*_optimizely_evaluate=force */ ↵window.runComplexABTest( 100000004574587, 'false', 'false', '', '', '100000004574587_1470682459118' );↵/*_optimizely_evaluate=safe */"
           // "/*_optimizely_evaluate=force */ ↵window.runComplexABTest( 100000004574587, 'true', 'false', 'Suicide Bomber Strikes at Lawyers&#39; Protest in Pakistan', '', '100000004574587_1470682459118' );↵/*_optimizely_evaluate=safe */"
