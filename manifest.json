@@ -43,7 +43,7 @@
       "19": "ui/images/icon19.png",
       "38": "ui/images/icon38.png"
     },
-    "default_title": "This page doesn't have Optimizely.",
+    "default_title": "This webpage isn't testing headline variations.",
     "default_popup": "ui/popup.html"
   },
 

@@ -52,8 +52,10 @@ port.onMessage.addListener(function (msg) {
         case 'rendered in sandbox':
           var url = msg.target.url;
           var siteKey = null;
+          var newsorg = '';
           for(var key in siteConfigs) {
             if(url.includes(key)) {
+              newsorg = siteConfigs[key].name
               siteKey = key;
               break;
             }
@@ -79,7 +81,8 @@ port.onMessage.addListener(function (msg) {
             else { // Plural
               count += ' experiments';
             }
-            $('#experiment-count').text(count);
+            $('.news-org').text(newsorg);
+            $('.experiment-count').text(count);
             $('#active-experiments').html(msg.target.results);
             
             $('li.list-group-item').click(function(e) {
@@ -116,7 +119,7 @@ $('a.share-on-twitter').click(function (e) {
   var prePopulText = $(this).data('text');
 
   chrome.windows.create({
-    url: 'https://twitter.com/intent/tweet?text=' + prePopulText + '&via=ProPublica',
+    url: 'https://twitter.com/intent/tweet?text=' + prePopulText + '#BlackBox&via=ProPublica',
     width: 680,
     height: 444,
     type: 'panel',

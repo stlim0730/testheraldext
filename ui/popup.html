@@ -13,7 +13,7 @@
 
     <nav class='navbar navbar-default'>
       <div class='navbar-header'>
-        <a class='navbar-brand' href='https://www.propublica.org/' target='_blank' title='Find out more on ProPublica.org'>TestHerald Extension</a>
+        <a class='navbar-brand' href='https://www.propublica.org/' target='_blank' title='Find out more on ProPublica.org'>Hidden headlines</a>
         <span class='small collapse debug-note text-right text-warning'><br />* You're looking at prepopulated data for test purpose.</span>
       </div>
     </nav>
@@ -24,37 +24,28 @@
 
       <div class='row'>
 
-        <div class='col-xs-offset-7 col-xs-5'>
-          <p class='text-align'>
-            <a class='btn btn-link' href='https://www.propublica.org/' target='_blank' title='Find out more on ProPublica.org'>Find out more</a>
-            <a class='btn btn-link share-on-twitter' data-text='Which headline would you be attracted to click?' href='#'>Share</a>
-          </p>
-        </div>
-
-      </div>
-
-
-      <div class='row'>
-
         <div class='not-found collapse in'>
           <div class='col-xs-offset-1 col-xs-10 well'>
-            <p>Currently, this page doesn't seem to be performing experiment.</p>
+            <p>Currently, this webpage doesn't seem to be running experiment.</p>
             <p>Come back later and see if there's any!</p>
-            <p>You may want to <a href='https://www.propublica.org/' target='_blank'>find out more</a> about the headline testing on ProPublica.org.</p>
+            <p>You may want to <a href='https://www.propublica.org/' target='_blank'>find out more</a> about the headline testing.</p>
           </div>
         </div>
 
         <div class='found collapse'>
           <div class='col-xs-offset-1 col-xs-10 well'>
-            <p>This page now has <u id='experiment-count'></u> running.</p>
-            <p>The followings are the headline variations for the same article that this page is experimenting on.</p>
-            <p>The bold one of them is the experimental condition you're assigned to.</p>
-            <p>You may click the variations to quickly scroll down/up to where the experiment is happening.</p>
+            <p><span class='news-org'></span> wants to know the best headline for <u class='experiment-count'></u> stories. So they are testing them on you.</p>
+            <p>Below you'll find various headlines that <span class='news-org'></span> wrote for the same story. The highlighted headline is what you currently see on <span class='news-org'></span>'s website. The one(s) not highlighted are headlines being tested on other readers. Click on the story to see it displayed on the webpage.
 
             <div id='active-experiments'></div>
 
             <p>Which does attract your attention the most?</p>
             <p><a class='share-on-twitter' data-text='Which headline would you be attracted to click?' href='#'>Share</a> and talk about it with your friends!</p>
+
+            <p class='text-align'>
+              <a class='btn btn-link' href='https://www.propublica.org/' target='_blank' title='Find out more on ProPublica.org'>Find out more</a>
+              <a class='btn btn-link share-on-twitter' data-text='See how news orgs are testing headlines on its readers' href='#'>Tweet these headlines</a>
+            </p>
           </div>
         </div>
 

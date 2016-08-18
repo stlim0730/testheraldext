@@ -200,10 +200,10 @@ var app = {};
                 if(actExCnt > 0) {
                   var notiTitle = null;
                   if(actExCnt == 1) {
-                    notiTitle = 'This website now has 1 headline testing.';
+                    notiTitle = 'This webpage now has 1 headline testing.';
                   }
                   else {
-                    notiTitle = 'This website now has ' + actExCnt + ' headline testings.';
+                    notiTitle = 'This webpage now has ' + actExCnt + ' headline testings.';
                   }
                   
                   // Activate desktop notification
