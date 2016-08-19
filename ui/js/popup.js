@@ -119,7 +119,7 @@ $('a.share-on-twitter').click(function (e) {
   var prePopulText = $(this).data('text');
 
   chrome.windows.create({
-    url: 'https://twitter.com/intent/tweet?text=' + prePopulText + '#BlackBox&via=ProPublica',
+    url: 'https://twitter.com/intent/tweet?text=' + prePopulText + '&hashtags=BlackBox&via=ProPublica',
     width: 680,
     height: 444,
     type: 'panel',
