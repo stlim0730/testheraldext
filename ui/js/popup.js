@@ -103,6 +103,11 @@ port.onMessage.addListener(function (msg) {
                 });
               }
             });
+
+            // Auto-highlight
+            // if($('li.list-group-item')[0]) {
+            //   $($('li.list-group-item')[0]).click();
+            // }
           }
           break;
       }
